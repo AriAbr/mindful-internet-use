@@ -1,0 +1,12 @@
+Skicka som object och desucructa eller skicka som olika parameterar
++ i klient koden så ser man man vad som skickas med
+- blir en koncepual enhet.
+- Blir fast med argment nman i funktioen efter som refktoring där dvs
+ändra variablen namn hade påverakat funktionen utanför. Så mindre coupling 
+om inte skickar som object. 
+- minskar risken för sid effecker om passar som values istället för reffernce
+-helt enkelkt svårare att göra namnbyten på variabler
+
+
+Måste börja commit efter varje färdigt moment eller med andr ord innan jag börjar med något annat
+varje commit ska vara en sak. 

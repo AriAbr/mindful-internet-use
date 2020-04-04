@@ -153,9 +153,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
   return new TimerButton(id, name, onchange);
 });
 
-var TimerButton =
-/*#__PURE__*/
-function () {
+var TimerButton = /*#__PURE__*/function () {
   function TimerButton(id, name, onchange) {
     _classCallCheck(this, TimerButton);
 

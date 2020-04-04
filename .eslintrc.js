@@ -4,7 +4,13 @@ module.exports = {
     es6: true,
     jest: true,
   },
-  extends: 'airbnb-base',
+  extends: ['airbnb-base', 'prettier'],
+
+  plugins: ['prettier'],
+  rules: {
+    'prettier/prettier': ['error'],
+  },
+
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',

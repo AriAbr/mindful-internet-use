@@ -144,9 +144,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
   return new createInputList_InputList(id, storageKey, callbackAfterSetStorage);
 });
 
-var createInputList_InputList =
-/*#__PURE__*/
-function () {
+var createInputList_InputList = /*#__PURE__*/function () {
   function InputList(id, storageKey) {
     var _this = this;
 
@@ -302,9 +300,7 @@ function createDefaultList_createClass(Constructor, protoProps, staticProps) { i
   return new DefaultList(id, storageKey, generalSwitch);
 });
 
-var DefaultList =
-/*#__PURE__*/
-function () {
+var DefaultList = /*#__PURE__*/function () {
   function DefaultList(id, storageKey, generalSwitch) {
     var _this = this;
 
@@ -425,9 +421,7 @@ function createTimerList_createClass(Constructor, protoProps, staticProps) { if 
   return new TimeList(id, storageKey, callbackAfterSetStorage);
 });
 
-var TimeList =
-/*#__PURE__*/
-function () {
+var TimeList = /*#__PURE__*/function () {
   function TimeList(id, type) {
     createTimerList_classCallCheck(this, TimeList);
 
@@ -596,9 +590,7 @@ function createGeneralSwitch_createClass(Constructor, protoProps, staticProps) {
   return new createGeneralSwitch_GeneralSwitch(id, containerId, key);
 });
 
-var createGeneralSwitch_GeneralSwitch =
-/*#__PURE__*/
-function () {
+var createGeneralSwitch_GeneralSwitch = /*#__PURE__*/function () {
   function GeneralSwitch(id, containerId, key) {
     var _this = this;
 
@@ -698,9 +690,7 @@ function createNavigation_createClass(Constructor, protoProps, staticProps) { if
   return new Navigation(id, items, logoUrl);
 });
 
-var Navigation =
-/*#__PURE__*/
-function () {
+var Navigation = /*#__PURE__*/function () {
   function Navigation(id, items, logoUrl) {
     createNavigation_classCallCheck(this, Navigation);
 

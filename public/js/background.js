@@ -153,18 +153,94 @@ var defaultQuotes = [{
 /* harmony default export */ var motivation = ({
   defaultQuotes: defaultQuotes
 });
-// CONCATENATED MODULE: ./src/background/background.js
+// CONCATENATED MODULE: ./src/background/utilities/utilities.js
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+var filterSubStrings = function filterSubStrings(strings, string) {
+  return strings.filter(function (elem) {
+    return string.toLowerCase().indexOf(elem.toLowerCase()) !== -1;
+  });
+};
+var syncQuotes = function syncQuotes(newQoutes, currentQoutes) {
+  if (!currentQoutes) {
+    return newQoutes.map(function (qoute) {
+      return _objectSpread({}, qoute, {
+        show: true
+      });
+    });
+  }
+
+  return newQoutes.map(function (newQoute) {
+    var qoute = currentQoutes.find(function (currentQoute) {
+      return currentQoute.qoute === newQoute.qoute;
+    });
+    var show = typeof qoute === 'undefined' ? false : qoute.show;
+    return _objectSpread({}, newQoute, {
+      show: show
+    });
+  });
+};
+var filterShowAndConcat = function filterShowAndConcat(quotes, newQoute) {
+  return quotes.filter(function (quote) {
+    return quote.show;
+  }).map(function (quote) {
+    return quote.qoute;
+  }).concat(newQoute);
+};
+
+var randomIntegerBetween = function randomIntegerBetween(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+var getRandomElement = function getRandomElement(list) {
+  return list && list.length > 0 ? list[randomIntegerBetween(0, list.length - 1)] : undefined;
+};
+var getRandomQuote = function getRandomQuote(quoteObjects, quotes) {
+  return getRandomElement(filterShowAndConcat(quoteObjects, quotes));
+};
+var subStringInArray = function subStringInArray(string, array) {
+  return array.find(function (elem) {
+    return string.toLowerCase().indexOf(elem.toLowerCase()) !== -1;
+  });
+};
+var arrayHasSubString = function arrayHasSubString(array, string) {
+  return array.find(function (elem) {
+    return elem.toLowerCase().indexOf(string.toLowerCase()) !== -1;
+  });
+};
+var utilities_isMindless = function isMindless(url, mindlessURLs, tempAccessURLs) {
+  if (/^chrome-extension:/.test(url) || !mindlessURLs) {
+    return;
+  }
+
+  var isMindless = !!subStringInArray(url, mindlessURLs);
+  var longestMatch = filterSubStrings(dangerListGlobal, url).reduce(function (a, b) {
+    return a.length > b.length ? a : b;
+  }, '');
+  var tempAccessPattern = arrayHasSubString(tempAccessURLs, longestMatch);
+  if (!isMindless) return;
+
+  if (!(tempAccessPattern && tempAccessPattern.length <= longestMatch.length)) {
+    return longestMatch;
+  }
+};
+var generateNotification = function generateNotification(defaults, userDefined) {
+  return {
+    type: 'basic',
+    title: 'Mindful Internet Use',
+    iconUrl: 'img/logoBlue128.png',
+    message: getRandomQuote(defaults, userDefined) || 'Until we can manage time, we can manage nothing else'
+  };
+};
+// CONCATENATED MODULE: ./src/background/background.js
 /* eslint-disable no-undef */
 
- // UNComment to test
-// const chrome = require('sinon-chrome');
-// module.exports = { filterSubStrings };
+
+
 
 var write = function write(obj) {
   var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
@@ -176,13 +252,9 @@ var read = function read(keys, callback) {
 };
 
 var background_syncTempAccess = function syncTempAccess(tempAccess) {
-  // read(['tempAccess'], ({ tempAccess }) => {
-  //   if (!tempAccess) {
-  //     return;
-  //   }
   var dayjsObj = dayjs_min_default()();
   var updated = tempAccess.filter(function (temp) {
-    return dayjsObj.diff(dayjs_min_default()(temp.firstAccess), "minutes") < temp.time;
+    return dayjsObj.diff(dayjs_min_default()(temp.firstAccess), 'minutes') < temp.time;
   });
 
   if (updated.length < tempAccess.length) {
@@ -191,40 +263,7 @@ var background_syncTempAccess = function syncTempAccess(tempAccess) {
     });
   }
 
-  return updated; // });
-};
-
-var randomBetween = function randomBetween(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}; // Filter all string which includes string
-
-
-var filterSubStrings = function filterSubStrings(arr, string) {
-  return arr.filter(function (elem) {
-    return string.toLowerCase().indexOf(elem.toLowerCase()) !== -1;
-  });
-}; // If no prevArr -> show all new quotes
-// else sync newArrs' show with prevArr and don't show new quotes
-
-
-var syncQuotes = function syncQuotes(newArr, prevArr) {
-  if (!prevArr) {
-    return newArr.map(function (qoute) {
-      return _objectSpread({}, qoute, {
-        show: true
-      });
-    });
-  }
-
-  return newArr.map(function (newQoute) {
-    var qoute = prevArr.find(function (prevQoute) {
-      return prevQoute.qoute === newQoute.qoute;
-    });
-    var show = typeof qoute === "undefined" ? false : qoute.show;
-    return _objectSpread({}, newQoute, {
-      show: show
-    });
-  });
+  return updated;
 };
 
 var lastUrl;
@@ -235,7 +274,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 
     if (typeof handlePageLoad({
       url: tab.url
-    }) !== "undefined") {
+    }) !== 'undefined') {
       chrome.tabs.reload(tabId);
     }
   }
@@ -251,7 +290,7 @@ var handleTabChange = function handleTabChange() {
     }
 
     var url = tabs[0].url;
-    var isStopPage = url.includes(chrome.extension.getURL("/stop.html"));
+    var isStopPage = url.includes(chrome.extension.getURL('/stop.html'));
 
     if (isStopPage) {
       chrome.tabs.update(tabs[0].id, {
@@ -261,9 +300,9 @@ var handleTabChange = function handleTabChange() {
   });
 };
 
-var syncStorage = function syncStorage(rawQuotes) {
+var background_syncStorage = function syncStorage(rawQuotes) {
   var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
-  read(["dangerTime", "restTime", "dangerReminderSwitch", "restReminderSwitch", "defaultQuotes", "defaultRemindersRest", "defaultRemindersDanger", "copy", "dangerList", "tempAccess", "userQuotes", "userRemindersDanger", "userRemindersRest"], function (res) {
+  read(['dangerTime', 'restTime', 'dangerReminderSwitch', 'restReminderSwitch', 'defaultQuotes', 'defaultRemindersRest', 'defaultRemindersDanger', 'copy', 'dangerList', 'tempAccess', 'userQuotes', 'userRemindersDanger', 'userRemindersRest'], function (res) {
     write({
       userQuotes: res.userQuotes || [],
       userRemindersDanger: res.userRemindersDanger || [],
@@ -275,42 +314,17 @@ var syncStorage = function syncStorage(rawQuotes) {
       defaultRemindersRest: syncQuotes(rawQuotes.defaultQuotes, res.defaultRemindersRest),
       tempAccess: res.tempAccess || [],
       defaultRemindersDanger: syncQuotes(rawQuotes.defaultQuotes, res.defaultRemindersDanger),
-      dangerReminderSwitch: typeof res.dangerReminderSwitch === "undefined" ? true : res.dangerReminderSwitch,
-      restReminderSwitch: typeof res.restReminderSwitch === "undefined" ? false : res.restReminderSwitch,
-      copy: typeof res.copy === "undefined" ? false : res.copy
+      dangerReminderSwitch: typeof res.dangerReminderSwitch === 'undefined' ? true : res.dangerReminderSwitch,
+      restReminderSwitch: typeof res.restReminderSwitch === 'undefined' ? false : res.restReminderSwitch,
+      copy: typeof res.copy === 'undefined' ? false : res.copy
     }, function () {
       return callback();
     });
   });
 };
 
-var filterShowAndConcat = function filterShowAndConcat(defaults, userDefined) {
-  return defaults.filter(function (quote) {
-    return quote.show;
-  }).map(function (quote) {
-    return quote.qoute;
-  }).concat(userDefined);
-};
-
-var getRandomElement = function getRandomElement(list) {
-  return list || list.length > 0 ? list[randomBetween(0, list.length - 1)] : undefined;
-};
-
-var getRandomQuote = function getRandomQuote(defaults, userDefined) {
-  return getRandomElement(filterShowAndConcat(defaults, userDefined));
-};
-
-var generateNotification = function generateNotification(defaults, userDefined) {
-  return {
-    type: "basic",
-    title: "Mindful Internet Use",
-    iconUrl: "img/logoBlue128.png",
-    message: getRandomQuote(defaults, userDefined) || "Until we can manage time, we can manage nothing else"
-  };
-};
-
-var notifyRest = function notifyRest() {
-  read(["defaultRemindersRest", "userRemindersRest", "restReminderSwitch", "dangerList"], function (_ref) {
+var background_notifyRest = function notifyRest() {
+  read(['defaultRemindersRest', 'userRemindersRest', 'restReminderSwitch', 'dangerList'], function (_ref) {
     var _ref$defaultReminders = _ref.defaultRemindersRest,
         defaultRemindersRest = _ref$defaultReminders === void 0 ? [] : _ref$defaultReminders,
         _ref$userRemindersRes = _ref.userRemindersRest,
@@ -330,7 +344,7 @@ var notifyRest = function notifyRest() {
         return;
       }
 
-      chrome.notifications.create("ReminderRest", generateNotification(defaultRemindersRest, userRemindersRest), function (id) {
+      chrome.notifications.create('ReminderRest', generateNotification(defaultRemindersRest, userRemindersRest), function (id) {
         return setTimeout(function () {
           return chrome.notifications.clear(id);
         }, 15000);
@@ -339,8 +353,8 @@ var notifyRest = function notifyRest() {
   });
 };
 
-var notifyMindless = function notifyMindless() {
-  read(["defaultRemindersDanger", "userRemindersDanger", "dangerReminderSwitch", "dangerList"], function (_ref2) {
+var background_notifyMindless = function notifyMindless() {
+  read(['defaultRemindersDanger', 'userRemindersDanger', 'dangerReminderSwitch', 'dangerList'], function (_ref2) {
     var _ref2$defaultReminder = _ref2.defaultRemindersDanger,
         defaultRemindersDanger = _ref2$defaultReminder === void 0 ? [] : _ref2$defaultReminder,
         _ref2$userRemindersDa = _ref2.userRemindersDanger,
@@ -360,42 +374,13 @@ var notifyMindless = function notifyMindless() {
         return;
       }
 
-      chrome.notifications.create("ReminderMindless", generateNotification(defaultRemindersDanger, userRemindersDanger), function (id) {
+      chrome.notifications.create('ReminderMindless', generateNotification(defaultRemindersDanger, userRemindersDanger), function (id) {
         return setTimeout(function () {
           return chrome.notifications.clear(id);
         }, 15000);
       });
     });
   });
-};
-
-var subStringInArray = function subStringInArray(string, array) {
-  return array.find(function (elem) {
-    return string.toLowerCase().indexOf(elem.toLowerCase()) !== -1;
-  });
-};
-
-var arrayHasSubString = function arrayHasSubString(array, string) {
-  return array.find(function (elem) {
-    return elem.toLowerCase().indexOf(string.toLowerCase()) !== -1;
-  });
-};
-
-var isMindless = function isMindless(url, mindlessURLs, tempAccessURLs) {
-  if (/^chrome-extension:/.test(url) || !mindlessURLs) {
-    return;
-  }
-
-  var isMindless = !!subStringInArray(url, mindlessURLs);
-  var longestMatch = filterSubStrings(dangerListGlobal, url).reduce(function (a, b) {
-    return a.length > b.length ? a : b;
-  }, "");
-  var tempAccessPattern = arrayHasSubString(tempAccessURLs, longestMatch);
-  if (!isMindless) return;
-
-  if (!(tempAccessPattern && tempAccessPattern.length <= longestMatch.length)) {
-    return longestMatch;
-  }
 };
 
 var reload = true;
@@ -405,9 +390,9 @@ var handlePageLoad = function handlePageLoad(_ref3) {
   var tempAccessURLs = tempAccessGlobal ? tempAccessGlobal.map(function (temp) {
     return temp.blockPattern;
   }) : [];
-  var mindlessURLs = dangerListGlobal || [];
-  var pattern = isMindless(url, mindlessURLs, tempAccessURLs);
-  var stopUrl = chrome.extension.getURL("/stop.html");
+  var mindlessURLs = background_dangerListGlobal || [];
+  var pattern = background_isMindless(url, mindlessURLs, tempAccessURLs);
+  var stopUrl = chrome.extension.getURL('/stop.html');
   var isStopPage = url.includes(stopUrl);
 
   if (isStopPage && reload) {
@@ -426,7 +411,7 @@ var handlePageLoad = function handlePageLoad(_ref3) {
 
 var handleStorageChange = function handleStorageChange(changes) {
   if (changes.dangerList) {
-    dangerListGlobal = changes.dangerList.newValue;
+    background_dangerListGlobal = changes.dangerList.newValue;
   }
 
   if (changes.tempAccess) {
@@ -435,38 +420,55 @@ var handleStorageChange = function handleStorageChange(changes) {
 
   if (changes.dangerTime) {
     clearInterval(timerDangerGlobal);
-    timerDangerGlobal = setInterval(notifyMindless, ONEMINUTE * changes.dangerTime.newValue);
+    timerDangerGlobal = setInterval(background_notifyMindless, ONEMINUTE * changes.dangerTime.newValue);
   }
 
   if (changes.restTime) {
     clearInterval(timerRestGlobal);
-    timerRestGlobal = setInterval(notifyRest, ONEMINUTE * changes.restTime.newValue);
+    timerRestGlobal = setInterval(background_notifyRest, ONEMINUTE * changes.restTime.newValue);
   }
 };
 
 var ONEMINUTE = 60 * 1000;
 var timerRestGlobal;
 var timerDangerGlobal;
-var dangerListGlobal;
+var background_dangerListGlobal;
 var tempAccessGlobal;
-syncStorage(motivation, function () {
-  read(["restTime", "dangerTime", "dangerList", "tempAccess"], function (_ref4) {
+background_syncStorage(motivation, function () {
+  read(['restTime', 'dangerTime', 'dangerList', 'tempAccess'], function (_ref4) {
     var restTime = _ref4.restTime,
         dangerTime = _ref4.dangerTime,
         dangerList = _ref4.dangerList,
         tempAccess = _ref4.tempAccess;
-    timerRestGlobal = setInterval(notifyRest, ONEMINUTE * restTime);
-    timerDangerGlobal = setInterval(notifyMindless, ONEMINUTE * dangerTime);
-    dangerListGlobal = dangerList;
+    timerRestGlobal = setInterval(background_notifyRest, ONEMINUTE * restTime);
+    timerDangerGlobal = setInterval(background_notifyMindless, ONEMINUTE * dangerTime);
+    background_dangerListGlobal = dangerList;
     tempAccessGlobal = background_syncTempAccess(tempAccess);
     chrome.tabs.onActivated.addListener(handleTabChange);
     chrome.storage.onChanged.addListener(handleStorageChange);
     chrome.webRequest.onBeforeRequest.addListener(handlePageLoad, {
-      urls: ["<all_urls>"],
-      types: ["main_frame"]
-    }, ["blocking"]);
+      urls: ['<all_urls>'],
+      types: ['main_frame']
+    }, ['blocking']);
   });
 });
+
+var background_isMindless = function isMindless(url, mindlessURLs, tempAccessURLs) {
+  if (/^chrome-extension:/.test(url) || !mindlessURLs) {
+    return;
+  }
+
+  var isMindless = !!subStringInArray(url, mindlessURLs);
+  var longestMatch = filterSubStrings(background_dangerListGlobal, url).reduce(function (a, b) {
+    return a.length > b.length ? a : b;
+  }, '');
+  var tempAccessPattern = arrayHasSubString(tempAccessURLs, longestMatch);
+  if (!isMindless) return;
+
+  if (!(tempAccessPattern && tempAccessPattern.length <= longestMatch.length)) {
+    return longestMatch;
+  }
+};
 
 /***/ })
 
