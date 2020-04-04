@@ -1,0 +1,48 @@
+.timerList-container {
+  width: 25%;
+}
+
+.reminder__item:first-child {
+  border-right: 2px solid rgb(10, 17, 26);
+  @include respond(tab-port) {
+    border-right: none !important;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid rgb(10, 17, 26);
+  }
+}
+
+.reminder__item {
+  @include respond(tab-port) {
+    margin-bottom: 5rem;
+  }
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+
+  padding: 0rem 1rem;
+  flex-direction: column;
+
+  & > * {
+    margin-top: 1rem;
+  }
+
+  & > *:first-child {
+    margin-top: -0.5rem;
+  }
+}
+
+.reminder {
+  display: flex;
+
+  @include respond(tab-port) {
+    flex-direction: column;
+  }
+}
+
+.reminder-content {
+  padding: 0;
+}
+
+.reminder__item:first-child {
+  border-right: 2px solid rgb(10, 17, 26);
+}

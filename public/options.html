@@ -1,0 +1,167 @@
+
+
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,400i|Nunito:300,300i" rel="stylesheet">
+   <title>Mindful Internet Use</title>
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A Chrome Extension that prevents mindless browsing">
+</head>
+<body>
+
+        <!-- The name MIU, short for Mindful Internet Use, could be viewed as the antonym of the Psychological term Problematic Internet Use(PIU). Problematic Internet Use is described “as an inability to control one's use of the Internet which leads to negative consequences in daily life”. The goal of this extension is to give its user a tool that will help them away from mindless browsing, where they use the Internet without any real intention. This will be done by encouraging the user to breathe and to copy a motivational quote before letting them access website the tend to use mindlessly. Also, motivational reminders while browsing can be enabled. -->
+    <div class="container">
+        <nav id="navigation" class="side-nav"></nav>
+
+        
+
+        <section class="main-content">
+                <div  data-section='danger'class="content">
+                        <div class="header--main ">
+                                <h3>MINDLESS WEBSITES</h3>
+                                <div class="header--small">
+                                    <div>
+                                        <div class="header--small copy-switch-heading">
+                                            <h3> 
+                                                WHAT TO DO BEFORE ACCESSING A MINDLESS WEBSITE
+                                            </h3>
+                                        </div> 
+                                        <div class="copy-switch-container">
+                                            <div id="copy-switch-container" class="copy-switch header--small header--small--white margin-top margin-bottom">
+                                                <span id="copy-switch"></span>
+                                            </div>
+                                            <span class="copy-switch__text copy-switch__text--copy"> BREATHE AND COPY A QUOTE LETTER BY LETTER </span>
+                                            <span class="copy-switch__text copy-switch__text--breath">JUST BREATHE </span>
+                                        </div>
+                                    </div>
+                                        <h3>ADD THE URLS, OR PART OF THE URLS, TO THE WEBSITES YOU TEND TO USE MINDLESSLY</h3>
+                                </div>
+                            </div>
+                    <div id='danger-list' class="input-list"></div>
+                </div>
+
+                <div  data-section='default-list' class="content content--hidden">
+                        <div class="header--main ">
+                                <h3>MOTIVATIONAL QUOTES</h3>
+                                <div class="header--small">
+                                        <h3> ONE OF THE QUOTES WILL BE RANDOMLY CHOSEN WHEN ACCESSING A MINDLESS WEBSITE</h3>
+                                </div>
+                        </div>
+                         
+                        <div class="default-list__item header">
+                            <h3>HERE YOU CAN WRITE YOUR OWN QUOTES</h3>
+                        </div>
+                        <div class="input-list" id="danger-user-quotes"></div>
+
+                    <div id="danger-default-quotes-container">
+
+                        <div class="default-list__item header">
+                
+                        <h3> ...OR/AND USE THE DEFAULT QUOTES</h3>
+                        <div id="switch-danger-default-quotes" class="generalSwitch"></div>
+                        </div>
+
+                    <div id="danger-default-quotes" class="default-list"></div>
+                </div>
+                </div>
+
+                <div data-section="reminder_content" class="reminder-content content content--hidden"> 
+
+                    <div  class="reminder" id="reminder">
+                        
+                        <div id="reminder-container-danger" class="reminder__item reminder__item--danger">
+                            <div class="header-container">
+                                    <h3 class="header header--small header--small-noToogle"> <span class="header--main">REMINDERS </span>FOR MINDLESS WEBSITES </h3>
+                                    <div id="switch-danger-reminder" class="generalSwitch"></div>
+                            </div>
+                            
+
+                                 <div class="timer-container">
+                                
+                                    <h3 class="header header--small">HOW OFTEN DO YOU WANT TO BE REMINDED?</h3>
+                                    <div class="timerList-container" id="timerListDanger"></div>
+                                         
+                                              
+                                </div>
+                            
+                            <div class="user-reminder-container">
+                                    <div class="header--small">
+                                        <h3> HERE YOU CAN WRITE YOUR OWN REMINDERS  </h3>
+                                    </div>
+                                    <div class="input-list"  id="reminders-user-danger"> </div>   
+                            </div>
+                           
+                            <div class="default-list__item ">
+                
+                                <h3 class="header header--small"> ...OR/AND USE THE DEFAULT QUOTES</h3>
+                                <div id="switch-danger-default-reminders" class="generalSwitch"></div>
+                            </div>
+
+                               
+                                <ul  id="reminders-default-danger"></ul>
+                          
+                            
+                           
+                            
+                           
+                        </div>
+                        <div id="reminder-container-rest" class="reminder__item reminder__item--rest">
+                              
+                            <div class="header-container">
+                                    <h3 class="header header--small header--small-noToogle" > <span class="header--main"> REMINDERS </span>FOR ALL WEBSITES </h3>
+                                    
+                                   
+                                     <div id="switch-rest-reminder" 
+                                     class="generalSwitch"></div>
+                            </div>
+                            <div class="timer-container">
+                                
+                                    <h3 class="header header--small">HOW OFTEN DO YOU WANT TO BE REMINDED?</h3>
+                                    <div  class="timerList-container" id="timerListRest"></div>
+                                         
+                                              
+                                </div>
+                               
+
+                                <div class="user-reminder-container">
+                                        <div class="header--small">
+                                                <h3> HERE YOU CAN WRITE YOUR OWN REMINDERS </h3>
+                                        </div>
+                                    <div class="input-list" id='reminders-user-rest' > </div>
+                                     
+                                </div>
+                                
+                                <div class="default-list__item">
+                
+                                        <h3 class="header header--small"> ...OR/AND USE THE DEFAULT QUOTES</h3>
+                                     <div id="switch-rest-default-reminders" class="generalSwitch"></div>
+                                </div>
+
+                               
+                                <ul  id="reminders-default-rest"></ul>
+
+                                     
+                                   
+                                    
+                               
+                        </div>
+                            
+                    </div>
+                     
+                </div>
+                 
+                    </div>
+               
+        </section>
+        
+
+       
+
+    <script src="js/options.js"></script>
+    
+</body>
+
+</html>

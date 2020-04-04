@@ -1,0 +1,230 @@
+.access-dropdown-container {
+  width: 100px;
+}
+
+.stop-container {
+  font-family: "Nunito", sans-serif;
+  font-weight: 300;
+  background: #111d2b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100vh;
+  width: 100%;
+  color: rgb(255, 190, 121);
+  box-sizing: border-box;
+  font-size: 2.5rem;
+  line-height: 1.2;
+  letter-spacing: 1.5px;
+  backface-visibility: hidden;
+}
+.mark {
+  color: #bbb;
+}
+
+#inspoUrl-container * {
+  color: #aaa;
+  font-style: italic;
+  text-decoration: none;
+}
+
+#inspoUrl-container *:hover {
+  color: #c59867;
+}
+
+.motivation-container {
+  min-width: 40rem;
+  max-width: 60rem;
+  height: 30vh;
+  margin: 0rem 2rem;
+  transition: 0.8s all;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.motivation-container > * {
+  margin-bottom: 1rem !important;
+}
+
+.breath {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.motivation__item {
+  margin-top: 20px;
+}
+
+.motivation-text {
+  margin-bottom: 1rem;
+}
+
+.logo {
+  position: absolute;
+  top: 1rem;
+  left: 2rem;
+}
+
+.logo:hover {
+  cursor: pointer;
+}
+
+.logo__img {
+  height: 6rem;
+  width: 6rem;
+}
+
+.accessBtn {
+  margin-right: 1rem;
+  background-color: #c59867;
+  font-size: 12px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
+  width: 100px;
+  color: #f9f7f6;
+  padding: 10px 0px;
+  border: 1px solid #c59867;
+  border-radius: 2px;
+  display: block;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.1);
+  transition: 0.4s all;
+  outline: none;
+  margin-bottom: 0;
+}
+
+.accessBtn__container {
+  display: flex;
+}
+
+.accessBtn__container--nav {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.accessBtn--close:hover,
+.accessBtn--access:hover,
+.accessBtn--options:hover {
+  cursor: pointer;
+  background: rgb(167, 121, 68);
+  border: 1px solid rgb(167, 121, 68);
+}
+
+.accessBtn--access:disabled {
+  background: #aaa;
+  border: 1px solid #aaa;
+}
+.accessBtn--access:disabled:hover {
+  cursor: default;
+  background: #aaa;
+  border: 1px solid #aaa;
+}
+
+#afterBreath {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 50px;
+}
+
+#counter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#counter span {
+  color: #f9f7f6;
+}
+
+#counter #breathCounter {
+  font-size: 5rem;
+  color: rgb(255, 190, 121);
+  margin: 2rem;
+}
+
+#motivation-text {
+  font-family: "Exo", sans-serif !important;
+  color: #f9f7f6;
+  font-weight: 300;
+  letter-spacing: 3px;
+}
+
+.motivation-author {
+  font-family: "Exo", sans-serif !important;
+  font-weight: 300;
+
+  text-align: right;
+  margin-right: 3rem;
+  margin-top: 0;
+}
+
+.blinking-cursor {
+  font-family: "Exo", sans-serif !important;
+  margin: -5px;
+
+  font-weight: 300;
+  font-size: 20;
+  color: #bbb;
+  -webkit-animation: 1s blink step-end infinite;
+  -moz-animation: 1s blink step-end infinite;
+  -ms-animation: 1s blink step-end infinite;
+  -o-animation: 1s blink step-end infinite;
+  animation: 1s blink step-end infinite;
+}
+
+@keyframes blink {
+  from,
+  to {
+    color: transparent;
+  }
+  50% {
+    color: #bbb;
+  }
+}
+
+@-moz-keyframes blink {
+  from,
+  to {
+    color: transparent;
+  }
+  50% {
+    color: #bbb;
+  }
+}
+
+@-webkit-keyframes blink {
+  from,
+  to {
+    color: transparent;
+  }
+  50% {
+    color: #bbb;
+  }
+}
+
+@-ms-keyframes blink {
+  from,
+  to {
+    color: transparent;
+  }
+  50% {
+    color: #bbb;
+  }
+}
+
+@-o-keyframes blink {
+  from,
+  to {
+    color: transparent;
+  }
+  50% {
+    color: #bbb;
+  }
+}

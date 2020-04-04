@@ -1,0 +1,4 @@
+// {
+//     "testFileExtensions": ["js"],
+//     "moduleFileExtensions": ["js"]
+// }

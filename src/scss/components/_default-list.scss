@@ -1,0 +1,29 @@
+.default-list {
+  &__item {
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 0.8rem 0.8rem 1rem;
+    justify-content: space-between;
+    border-radius: 2px;
+
+    &:nth-child(odd) {
+      background: rgb(10, 17, 26);
+    }
+
+    &-quote {
+      max-width: 90%;
+
+      &--hidden {
+        color: rgba(249, 247, 246, 0.3) !important;
+      }
+    }
+
+    &-author {
+      font-style: italic;
+      color: #c59867;
+      font-size: 1.4rem;
+    }
+  }
+}
+
