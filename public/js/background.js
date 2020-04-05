@@ -212,27 +212,11 @@ var arrayHasSubString = function arrayHasSubString(array, string) {
     return elem.toLowerCase().indexOf(string.toLowerCase()) !== -1;
   });
 };
-var utilities_isMindless = function isMindless(url, mindlessURLs, tempAccessURLs) {
-  if (/^chrome-extension:/.test(url) || !mindlessURLs) {
-    return;
-  }
-
-  var isMindless = !!subStringInArray(url, mindlessURLs);
-  var longestMatch = filterSubStrings(dangerListGlobal, url).reduce(function (a, b) {
-    return a.length > b.length ? a : b;
-  }, '');
-  var tempAccessPattern = arrayHasSubString(tempAccessURLs, longestMatch);
-  if (!isMindless) return;
-
-  if (!(tempAccessPattern && tempAccessPattern.length <= longestMatch.length)) {
-    return longestMatch;
-  }
-};
 var generateNotification = function generateNotification(defaults, userDefined) {
   return {
     type: 'basic',
     title: 'Mindful Internet Use',
-    iconUrl: 'img/logoBlue128.png',
+    iconUrl: '../img/logoBlue128.png',
     message: getRandomQuote(defaults, userDefined) || 'Until we can manage time, we can manage nothing else'
   };
 };
@@ -390,7 +374,7 @@ var handlePageLoad = function handlePageLoad(_ref3) {
   var tempAccessURLs = tempAccessGlobal ? tempAccessGlobal.map(function (temp) {
     return temp.blockPattern;
   }) : [];
-  var mindlessURLs = background_dangerListGlobal || [];
+  var mindlessURLs = dangerListGlobal || [];
   var pattern = background_isMindless(url, mindlessURLs, tempAccessURLs);
   var stopUrl = chrome.extension.getURL('/stop.html');
   var isStopPage = url.includes(stopUrl);
@@ -411,7 +395,7 @@ var handlePageLoad = function handlePageLoad(_ref3) {
 
 var handleStorageChange = function handleStorageChange(changes) {
   if (changes.dangerList) {
-    background_dangerListGlobal = changes.dangerList.newValue;
+    dangerListGlobal = changes.dangerList.newValue;
   }
 
   if (changes.tempAccess) {
@@ -432,7 +416,7 @@ var handleStorageChange = function handleStorageChange(changes) {
 var ONEMINUTE = 60 * 1000;
 var timerRestGlobal;
 var timerDangerGlobal;
-var background_dangerListGlobal;
+var dangerListGlobal;
 var tempAccessGlobal;
 background_syncStorage(motivation, function () {
   read(['restTime', 'dangerTime', 'dangerList', 'tempAccess'], function (_ref4) {
@@ -442,7 +426,7 @@ background_syncStorage(motivation, function () {
         tempAccess = _ref4.tempAccess;
     timerRestGlobal = setInterval(background_notifyRest, ONEMINUTE * restTime);
     timerDangerGlobal = setInterval(background_notifyMindless, ONEMINUTE * dangerTime);
-    background_dangerListGlobal = dangerList;
+    dangerListGlobal = dangerList;
     tempAccessGlobal = background_syncTempAccess(tempAccess);
     chrome.tabs.onActivated.addListener(handleTabChange);
     chrome.storage.onChanged.addListener(handleStorageChange);
@@ -459,7 +443,7 @@ var background_isMindless = function isMindless(url, mindlessURLs, tempAccessURL
   }
 
   var isMindless = !!subStringInArray(url, mindlessURLs);
-  var longestMatch = filterSubStrings(background_dangerListGlobal, url).reduce(function (a, b) {
+  var longestMatch = filterSubStrings(dangerListGlobal, url).reduce(function (a, b) {
     return a.length > b.length ? a : b;
   }, '');
   var tempAccessPattern = arrayHasSubString(tempAccessURLs, longestMatch);

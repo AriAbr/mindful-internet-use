@@ -1,9 +1,9 @@
 {
   "name": "Mindful Internet Use",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "manifest_version": 2,
   "description": "A Chrome Extension that prevents mindless browsing",
-
+  "content_security_policy": "script-src 'self' https://www.google-analytics.com/analytics.js;  object-src 'self'",
   "browser_action": {
     "default_popup": "popup.html",
     "default-icon": "img/logoBlue128.png"

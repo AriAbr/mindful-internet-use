@@ -454,7 +454,7 @@ var TimeList = /*#__PURE__*/function () {
   }, {
     key: "setUpHtml",
     value: function setUpHtml() {
-      this.container.innerHTML = "\n    <div class=\"custom-select custom-select-".concat(this.type, "\">\n    <select class=\"custom-select__select\">\n        <option value=\"10\">10min</option>\n        <option value=\"10\">10min</option>\n        <option   selected = 'selected'value=\"15\">15min</option>\n        <option value=\"20\">20min</option>\n        <option value=\"30\">30min</option>\n        <option value=\"45\">45min</option>\n        <option value=\"60\">60min</option>\n        \n    </select>\n    </div>\n    ");
+      this.container.innerHTML = "\n    <div class=\"custom-select custom-select-".concat(this.type, "\">\n    <select class=\"custom-select__select\">\n        <option value=\"1\">10min</option>\n        <option value=\"1\">10min</option>\n        <option   selected = 'selected'value=\"15\">15min</option>\n        <option value=\"20\">20min</option>\n        <option value=\"30\">30min</option>\n        <option value=\"45\">45min</option>\n        <option value=\"60\">60min</option>\n        \n    </select>\n    </div>\n    ");
     }
   }, {
     key: "setUpList",
@@ -750,35 +750,52 @@ var Navigation = /*#__PURE__*/function () {
 
 
 
+(function (i, s, o, g, r, a, m) {
+  i.GoogleAnalyticsObject = r;
+  i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments);
+  }, i[r].l = 1 * new Date();
+  a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+  a.async = 1;
+  a.src = g;
+  m.parentNode.insertBefore(a, m);
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', 'UA-162836929-1', 'auto'); // Modifications:
+
+ga('set', 'checkProtocolTask', null); // Disables file protocol checking.
+
+ga('send', 'pageview', '/options'); // Set page, avoiding rejection due to chrome-extension protocol
+
 try {
-  var timerListDanger = createTimerList("timerListDanger", "DANGER");
-  var timerListRest = createTimerList("timerListRest", "REST");
-  var dangerURLs = createInputList("danger-list", "dangerList");
-  var userDangerReminders = createInputList("reminders-user-danger", "userRemindersDanger");
-  var userRestReminders = createInputList("reminders-user-rest", "userRemindersRest");
-  var switchDangerReminder = createGeneralSwitch("switch-danger-reminder", "reminder-container-danger", "dangerReminderSwitch");
-  var switchRestReminder = createGeneralSwitch("switch-rest-reminder", "reminder-container-rest", "restReminderSwitch");
-  var switchDefaultQoutes = createGeneralSwitch("switch-danger-default-quotes", "danger-default-quotes-container", undefined);
-  var dangerDefaultQuotes = createDefaultList("danger-default-quotes", "defaultQuotes", switchDefaultQoutes);
+  var timerListDanger = createTimerList('timerListDanger', 'DANGER');
+  var timerListRest = createTimerList('timerListRest', 'REST');
+  var dangerURLs = createInputList('danger-list', 'dangerList');
+  var userDangerReminders = createInputList('reminders-user-danger', 'userRemindersDanger');
+  var userRestReminders = createInputList('reminders-user-rest', 'userRemindersRest');
+  var switchDangerReminder = createGeneralSwitch('switch-danger-reminder', 'reminder-container-danger', 'dangerReminderSwitch');
+  var switchRestReminder = createGeneralSwitch('switch-rest-reminder', 'reminder-container-rest', 'restReminderSwitch');
+  var switchDefaultQoutes = createGeneralSwitch('switch-danger-default-quotes', 'danger-default-quotes-container', undefined);
+  var dangerDefaultQuotes = createDefaultList('danger-default-quotes', 'defaultQuotes', switchDefaultQoutes);
   switchDefaultQoutes.setCallback(dangerDefaultQuotes.setAll);
-  var switchDangerDefaultReminders = createGeneralSwitch("switch-danger-default-reminders", "switch-danger-default-reminders", undefined);
-  var defaultDangerReminders = createDefaultList("reminders-default-danger", "defaultRemindersDanger", switchDangerDefaultReminders);
+  var switchDangerDefaultReminders = createGeneralSwitch('switch-danger-default-reminders', 'switch-danger-default-reminders', undefined);
+  var defaultDangerReminders = createDefaultList('reminders-default-danger', 'defaultRemindersDanger', switchDangerDefaultReminders);
   switchDangerDefaultReminders.setCallback(defaultDangerReminders.setAll);
-  var switchRestDefaultReminders = createGeneralSwitch("switch-rest-default-reminders", "switch-rest-default-reminders", undefined);
-  var defaultRestReminders = createDefaultList("reminders-default-rest", "defaultRemindersRest", switchRestDefaultReminders);
+  var switchRestDefaultReminders = createGeneralSwitch('switch-rest-default-reminders', 'switch-rest-default-reminders', undefined);
+  var defaultRestReminders = createDefaultList('reminders-default-rest', 'defaultRemindersRest', switchRestDefaultReminders);
   switchRestDefaultReminders.setCallback(defaultRestReminders.setAll);
-  var dangerUserQuotes = createInputList("danger-user-quotes", "userQuotes");
-  var copySwitch = createGeneralSwitch("copy-switch", "copy-switch-container", "copy");
-  var navigation = createNavigation("navigation", [{
-    section: "danger",
-    text: "MINDLESS WEBSITES"
+  var dangerUserQuotes = createInputList('danger-user-quotes', 'userQuotes');
+  var copySwitch = createGeneralSwitch('copy-switch', 'copy-switch-container', 'copy');
+  var navigation = createNavigation('navigation', [{
+    section: 'danger',
+    text: 'MINDLESS WEBSITES'
   }, {
-    section: "default-list",
-    text: "MOTIVATIONAL QUOTES"
+    section: 'default-list',
+    text: 'MOTIVATIONAL QUOTES'
   }, {
-    section: "reminder_content",
-    text: "REMINDERS"
-  }], "img/logoBlue128.png");
+    section: 'reminder_content',
+    text: 'REMINDERS'
+  }], 'img/logoBlue128.png');
 } catch (e) {
   console.error(e);
 }

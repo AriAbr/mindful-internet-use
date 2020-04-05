@@ -1,19 +1,45 @@
-import dayjs from "dayjs";
-import utilities from "../utilities";
-import createTimerButton from "../components/createTimerButton";
+import dayjs from 'dayjs';
+import utilities from '../utilities';
+import createTimerButton from '../components/createTimerButton';
 
-const closeTab = e => {
-  chrome.tabs.getCurrent(tab => {
+(function (i, s, o, g, r, a, m) {
+  i.GoogleAnalyticsObject = r;
+  (i[r] =
+    i[r] ||
+    function () {
+      (i[r].q = i[r].q || []).push(arguments);
+    }),
+    (i[r].l = 1 * new Date());
+  (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+  a.async = 1;
+  a.src = g;
+  m.parentNode.insertBefore(a, m);
+})(
+  window,
+  document,
+  'script',
+  'https://www.google-analytics.com/analytics.js',
+  'ga'
+);
+
+ga('create', 'UA-162836929-1', 'auto');
+
+// Modifications:
+ga('set', 'checkProtocolTask', null); // Disables file protocol checking.
+ga('send', 'pageview', '/stop'); // Set page, avoiding rejection due to chrome-extension protocol
+
+const closeTab = (e) => {
+  chrome.tabs.getCurrent((tab) => {
     chrome.tabs.remove(tab.id, () => {});
   });
 };
 
 const goToOptions = () => {
-  chrome.tabs.create({ url: "options.html" });
+  chrome.tabs.create({ url: 'options.html' });
 };
 
-chrome.storage.sync.get(["copy"], ({ copy }) => {
-  const breathCounter = document.getElementById("breathCounter");
+chrome.storage.sync.get(['copy'], ({ copy }) => {
+  const breathCounter = document.getElementById('breathCounter');
 
   let breathsLeft = copy ? 20 : 30;
 
@@ -30,11 +56,11 @@ chrome.storage.sync.get(["copy"], ({ copy }) => {
 });
 
 let currentIndex = 0;
-let motivationNode = "";
-let motivationAuthor = "";
-let htmlString = "";
+let motivationNode = '';
+let motivationAuthor = '';
+let htmlString = '';
 
-chrome.storage.sync.get(["defaultQuotes", "userQuotes", "copy"], result => {
+chrome.storage.sync.get(['defaultQuotes', 'userQuotes', 'copy'], (result) => {
   if (result.defaultQuotes) {
     let qoutes = result.defaultQuotes.reduce((total, current, index, array) => {
       if (current.show) {
@@ -45,29 +71,29 @@ chrome.storage.sync.get(["defaultQuotes", "userQuotes", "copy"], result => {
     }, []);
 
     if (result.userQuotes) {
-      qoutes = qoutes.concat(result.userQuotes.map(qoute => ({ qoute })));
+      qoutes = qoutes.concat(result.userQuotes.map((qoute) => ({ qoute })));
     }
     if (qoutes.length === 0) {
       qoutes = [
         {
           qoute:
-            "You don’t need a new plan for next year. You need a commitment",
-          author: "Seth Godin"
-        }
+            'You don’t need a new plan for next year. You need a commitment',
+          author: 'Seth Godin',
+        },
       ];
     }
 
     const index = Math.floor(Math.random() * qoutes.length);
-    const author = qoutes[index].author ? qoutes[index].author : "";
-    const motivationSplit = qoutes[index].qoute.split("");
+    const author = qoutes[index].author ? qoutes[index].author : '';
+    const motivationSplit = qoutes[index].qoute.split('');
 
-    motivationNode = document.getElementById("motivation-text");
-    motivationAuthor = document.getElementById("motivation-author");
+    motivationNode = document.getElementById('motivation-text');
+    motivationAuthor = document.getElementById('motivation-author');
 
     htmlString = motivationSplit.reduce(
       (htmlString, char, index) =>
         (htmlString += `<span data-index=${index}>${char}</span>`),
-      ""
+      ''
     );
     motivationNode.innerHTML = htmlString;
     motivationAuthor.innerHTML = author;
@@ -82,11 +108,11 @@ chrome.storage.sync.get(["defaultQuotes", "userQuotes", "copy"], result => {
   // console.log(motivationSplit);
   function handleCopying(motivationSplit) {
     motivationNode.insertAdjacentElement(
-      "afterbegin",
+      'afterbegin',
       utilities.htmlToElement('<span class="blinking-cursor">|</span>')
     );
 
-    document.addEventListener("keydown", registerKeyDonw);
+    document.addEventListener('keydown', registerKeyDonw);
 
     function isCorrectKeyCode(pressedKey, expected) {
       return pressedKey.toLowerCase() === expected.toLowerCase();
@@ -107,12 +133,12 @@ chrome.storage.sync.get(["defaultQuotes", "userQuotes", "copy"], result => {
           charHtml
         );
 
-        charHtml.classList.add("mark");
+        charHtml.classList.add('mark');
         currentIndex++;
       }
 
       if (currentIndex === motivationSplit.length) {
-        document.removeEventListener("keydown", registerKeyDonw);
+        document.removeEventListener('keydown', registerKeyDonw);
         makeTempAccess();
       }
     }
@@ -121,15 +147,15 @@ chrome.storage.sync.get(["defaultQuotes", "userQuotes", "copy"], result => {
 
 function makeTempAccess() {
   const url = new URL(window.location.href);
-  const blockUrl = url.searchParams.get("url");
-  const blockPattern = url.searchParams.get("pattern");
+  const blockUrl = url.searchParams.get('url');
+  const blockPattern = url.searchParams.get('pattern');
 
-  const accessContainer = document.querySelector("#access-container");
-  accessContainer.innerHTML = "";
+  const accessContainer = document.querySelector('#access-container');
+  accessContainer.innerHTML = '';
 
-  accessContainer.innerHTML = "";
-  createTimerButton("access-container", "access-dropdown", time => {
-    chrome.storage.sync.get(["tempAccess"], result => {
+  accessContainer.innerHTML = '';
+  createTimerButton('access-container', 'access-dropdown', (time) => {
+    chrome.storage.sync.get(['tempAccess'], (result) => {
       let tempAccess = [];
 
       if (result.tempAccess) {
@@ -146,19 +172,19 @@ function makeTempAccess() {
 }
 
 function setupAfterBreaths() {
-  document.querySelector(".breath").style.display = "none";
-  document.getElementById("afterBreath").style.display = "flex";
+  document.querySelector('.breath').style.display = 'none';
+  document.getElementById('afterBreath').style.display = 'flex';
 }
 
 function handleNotCopying() {
-  document.querySelector(".motivation-text-intro").style.display = "none";
+  document.querySelector('.motivation-text-intro').style.display = 'none';
   makeTempAccess();
 }
 
-document.querySelector(".logo").addEventListener("click", goToOptions);
-document.querySelector(".accessBtn--close").addEventListener("click", closeTab);
+document.querySelector('.logo').addEventListener('click', goToOptions);
+document.querySelector('.accessBtn--close').addEventListener('click', closeTab);
 document
-  .querySelector(".accessBtn--options")
-  .addEventListener("click", goToOptions);
+  .querySelector('.accessBtn--options')
+  .addEventListener('click', goToOptions);
 
 console.log(window.location.href);

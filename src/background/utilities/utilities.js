@@ -40,29 +40,10 @@ export const subStringInArray = (string, array) =>
 export const arrayHasSubString = (array, string) =>
   array.find((elem) => elem.toLowerCase().indexOf(string.toLowerCase()) !== -1);
 
-export const isMindless = (url, mindlessURLs, tempAccessURLs) => {
-  if (/^chrome-extension:/.test(url) || !mindlessURLs) {
-    return;
-  }
-
-  const isMindless = !!subStringInArray(url, mindlessURLs);
-  const longestMatch = filterSubStrings(dangerListGlobal, url).reduce(
-    (a, b) => (a.length > b.length ? a : b),
-    ''
-  );
-  const tempAccessPattern = arrayHasSubString(tempAccessURLs, longestMatch);
-
-  if (!isMindless) return;
-
-  if (!(tempAccessPattern && tempAccessPattern.length <= longestMatch.length)) {
-    return longestMatch;
-  }
-};
-
 export const generateNotification = (defaults, userDefined) => ({
   type: 'basic',
   title: 'Mindful Internet Use',
-  iconUrl: 'img/logoBlue128.png',
+  iconUrl: '../img/logoBlue128.png',
   message:
     getRandomQuote(defaults, userDefined) ||
     'Until we can manage time, we can manage nothing else',

@@ -1,4 +1,5 @@
-export default (id, storageKey, callbackAfterSetStorage) => new TimeList(id, storageKey, callbackAfterSetStorage);
+export default (id, storageKey, callbackAfterSetStorage) =>
+  new TimeList(id, storageKey, callbackAfterSetStorage);
 
 class TimeList {
   constructor(id, type) {
@@ -31,8 +32,8 @@ class TimeList {
     this.container.innerHTML = `
     <div class="custom-select custom-select-${this.type}">
     <select class="custom-select__select">
-        <option value="10">10min</option>
-        <option value="10">10min</option>
+        <option value="1">10min</option>
+        <option value="1">10min</option>
         <option   selected = 'selected'value="15">15min</option>
         <option value="20">20min</option>
         <option value="30">30min</option>
@@ -81,7 +82,9 @@ class TimeList {
           let i;
           let k;
 
-          const s = this.parentNode.parentNode.getElementsByTagName('select')[0];
+          const s = this.parentNode.parentNode.getElementsByTagName(
+            'select'
+          )[0];
           const h = this.parentNode.previousSibling;
           for (i = 0; i < s.length; i++) {
             if (s.options[i].innerHTML == this.innerHTML) {
@@ -136,7 +139,10 @@ class TimeList {
   }
 
   timeHandler(e) {
-    const minutes = e.target.textContent.substring(0, e.target.textContent.length - 3);
+    const minutes = e.target.textContent.substring(
+      0,
+      e.target.textContent.length - 3
+    );
 
     if (this.type === 'DANGER') {
       chrome.storage.sync.set({ dangerTime: parseInt(minutes) }, () => {

@@ -44,6 +44,7 @@ const handleTabChange = () => {
       active: true,
       lastFocusedWindow: true,
     },
+
     (tabs) => {
       if (!(tabs && tabs[0] && tabs[0].url)) {
         return;

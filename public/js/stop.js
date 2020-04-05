@@ -332,6 +332,23 @@ var TimerButton = /*#__PURE__*/function () {
 
 
 
+(function (i, s, o, g, r, a, m) {
+  i.GoogleAnalyticsObject = r;
+  i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments);
+  }, i[r].l = 1 * new Date();
+  a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+  a.async = 1;
+  a.src = g;
+  m.parentNode.insertBefore(a, m);
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', 'UA-162836929-1', 'auto'); // Modifications:
+
+ga('set', 'checkProtocolTask', null); // Disables file protocol checking.
+
+ga('send', 'pageview', '/stop'); // Set page, avoiding rejection due to chrome-extension protocol
+
 var closeTab = function closeTab(e) {
   chrome.tabs.getCurrent(function (tab) {
     chrome.tabs.remove(tab.id, function () {});
@@ -340,13 +357,13 @@ var closeTab = function closeTab(e) {
 
 var goToOptions = function goToOptions() {
   chrome.tabs.create({
-    url: "options.html"
+    url: 'options.html'
   });
 };
 
-chrome.storage.sync.get(["copy"], function (_ref) {
+chrome.storage.sync.get(['copy'], function (_ref) {
   var copy = _ref.copy;
-  var breathCounter = document.getElementById("breathCounter");
+  var breathCounter = document.getElementById('breathCounter');
   var breathsLeft = copy ? 20 : 30;
   breathCounter.textContent = breathsLeft;
   var timer = setInterval(function () {
@@ -360,10 +377,10 @@ chrome.storage.sync.get(["copy"], function (_ref) {
   }, 1000);
 });
 var currentIndex = 0;
-var motivationNode = "";
-var motivationAuthor = "";
-var htmlString = "";
-chrome.storage.sync.get(["defaultQuotes", "userQuotes", "copy"], function (result) {
+var motivationNode = '';
+var motivationAuthor = '';
+var htmlString = '';
+chrome.storage.sync.get(['defaultQuotes', 'userQuotes', 'copy'], function (result) {
   if (result.defaultQuotes) {
     var qoutes = result.defaultQuotes.reduce(function (total, current, index, array) {
       if (current.show) {
@@ -386,19 +403,19 @@ chrome.storage.sync.get(["defaultQuotes", "userQuotes", "copy"], function (resul
 
     if (qoutes.length === 0) {
       qoutes = [{
-        qoute: "You don’t need a new plan for next year. You need a commitment",
-        author: "Seth Godin"
+        qoute: 'You don’t need a new plan for next year. You need a commitment',
+        author: 'Seth Godin'
       }];
     }
 
     var index = Math.floor(Math.random() * qoutes.length);
-    var author = qoutes[index].author ? qoutes[index].author : "";
-    var motivationSplit = qoutes[index].qoute.split("");
-    motivationNode = document.getElementById("motivation-text");
-    motivationAuthor = document.getElementById("motivation-author");
+    var author = qoutes[index].author ? qoutes[index].author : '';
+    var motivationSplit = qoutes[index].qoute.split('');
+    motivationNode = document.getElementById('motivation-text');
+    motivationAuthor = document.getElementById('motivation-author');
     htmlString = motivationSplit.reduce(function (htmlString, _char, index) {
       return htmlString += "<span data-index=".concat(index, ">").concat(_char, "</span>");
-    }, "");
+    }, '');
     motivationNode.innerHTML = htmlString;
     motivationAuthor.innerHTML = author;
 
@@ -411,8 +428,8 @@ chrome.storage.sync.get(["defaultQuotes", "userQuotes", "copy"], function (resul
 
 
   function handleCopying(motivationSplit) {
-    motivationNode.insertAdjacentElement("afterbegin", utilities["a" /* default */].htmlToElement('<span class="blinking-cursor">|</span>'));
-    document.addEventListener("keydown", registerKeyDonw);
+    motivationNode.insertAdjacentElement('afterbegin', utilities["a" /* default */].htmlToElement('<span class="blinking-cursor">|</span>'));
+    document.addEventListener('keydown', registerKeyDonw);
 
     function isCorrectKeyCode(pressedKey, expected) {
       return pressedKey.toLowerCase() === expected.toLowerCase();
@@ -425,12 +442,12 @@ chrome.storage.sync.get(["defaultQuotes", "userQuotes", "copy"], function (resul
         var charHtml = motivationNode.querySelector("[data-index='".concat(currentIndex, "']"));
         charHtml.previousElementSibling && motivationNode.removeChild(charHtml.previousElementSibling);
         utilities["a" /* default */].insertAfter(utilities["a" /* default */].htmlToElement('<span class="blinking-cursor">|</span>'), charHtml);
-        charHtml.classList.add("mark");
+        charHtml.classList.add('mark');
         currentIndex++;
       }
 
       if (currentIndex === motivationSplit.length) {
-        document.removeEventListener("keydown", registerKeyDonw);
+        document.removeEventListener('keydown', registerKeyDonw);
         makeTempAccess();
       }
     }
@@ -439,13 +456,13 @@ chrome.storage.sync.get(["defaultQuotes", "userQuotes", "copy"], function (resul
 
 function makeTempAccess() {
   var url = new URL(window.location.href);
-  var blockUrl = url.searchParams.get("url");
-  var blockPattern = url.searchParams.get("pattern");
-  var accessContainer = document.querySelector("#access-container");
-  accessContainer.innerHTML = "";
-  accessContainer.innerHTML = "";
-  createTimerButton("access-container", "access-dropdown", function (time) {
-    chrome.storage.sync.get(["tempAccess"], function (result) {
+  var blockUrl = url.searchParams.get('url');
+  var blockPattern = url.searchParams.get('pattern');
+  var accessContainer = document.querySelector('#access-container');
+  accessContainer.innerHTML = '';
+  accessContainer.innerHTML = '';
+  createTimerButton('access-container', 'access-dropdown', function (time) {
+    chrome.storage.sync.get(['tempAccess'], function (result) {
       var tempAccess = [];
 
       if (result.tempAccess) {
@@ -467,18 +484,18 @@ function makeTempAccess() {
 }
 
 function setupAfterBreaths() {
-  document.querySelector(".breath").style.display = "none";
-  document.getElementById("afterBreath").style.display = "flex";
+  document.querySelector('.breath').style.display = 'none';
+  document.getElementById('afterBreath').style.display = 'flex';
 }
 
 function handleNotCopying() {
-  document.querySelector(".motivation-text-intro").style.display = "none";
+  document.querySelector('.motivation-text-intro').style.display = 'none';
   makeTempAccess();
 }
 
-document.querySelector(".logo").addEventListener("click", goToOptions);
-document.querySelector(".accessBtn--close").addEventListener("click", closeTab);
-document.querySelector(".accessBtn--options").addEventListener("click", goToOptions);
+document.querySelector('.logo').addEventListener('click', goToOptions);
+document.querySelector('.accessBtn--close').addEventListener('click', closeTab);
+document.querySelector('.accessBtn--options').addEventListener('click', goToOptions);
 console.log(window.location.href);
 
 /***/ })
