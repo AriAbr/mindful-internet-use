@@ -1,8 +1,21 @@
-# MIU
+# Mindful Internet Use
 
-Var väldigt nöjd när släpper den, testa den ordentligt och tänk ut hur den ska spridas
+### A Chrome Extension that prevents mindless browsing
 
+https://chrome.google.com/webstore/detail/mindful-internet-use/hieolpjdilnibgamiafklnlcmagdngoo?hl=en
 
-DANGER LIST -> MINDLESS LIST
-under rubrikerna skriv någon text
-Skriv tex It can be good would reminder even if your are not on a MINDLESS LIST
+#### Technologies used:
+
+HTML, SCSS, Vanilla Javascript, Webpack, Google analytics
+
+#### Why you should try it:
+
+The name MIU, short for **Mindful Internet Use**, can be viewed as the antonym of the Psychological term Problematic Internet Use (PIU). Problematic Internet Use is described as "an inability to control one's use of the Internet which leads to negative consequences in daily life”.
+
+Unlike many other extensions, MIU will not provide a quick fix by blocking websites. MIU will instead focus on the reason behind the problem, the user's tendency to browse the web mindlessly. By repeatedly encouraging a more intentional and mindful usage of the internet this extension will help the user to quit undesirable internet use.
+
+The goal of this extension is to give its users a tool to help them avoid mindless browsing and unintentional internet use. This will be done by encouraging the user to breathe and present quotes that remind the user what they value before allowing the user to access a listed website. Also, motivational notifications while browsing can be enabled.
+
+#### Privacy:
+
+Neither your quotes nor the list of mindless websites will be sent anywhere, the data will remain secure on your own device.
