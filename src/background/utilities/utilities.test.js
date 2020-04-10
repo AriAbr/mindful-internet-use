@@ -171,9 +171,9 @@ describe('getRandomQuote(quoteObjects, quotes)', () => {
     ];
     const quotes = ['c', 'd', 'e'];
 
-    const allPossibleQoutes = ['a', 'c', 'd', 'e'];
+    const allPossibleQuotes = ['a', 'c', 'd', 'e'];
 
     const result = getRandomQuote(quotesObjects, quotes);
-    expect(allPossibleQoutes).toContain(result);
+    expect(allPossibleQuotes).toContain(result);
   });
 });

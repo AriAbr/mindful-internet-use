@@ -100,10 +100,6 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// EXTERNAL MODULE: ./node_modules/dayjs/dayjs.min.js
-var dayjs_min = __webpack_require__(1);
-var dayjs_min_default = /*#__PURE__*/__webpack_require__.n(dayjs_min);
-
 // CONCATENATED MODULE: ./src/motivation.js
 var defaultQuotes = [{
   qoute: 'Mindfulness means being awake. It means knowing what you are doing',
@@ -153,6 +149,10 @@ var defaultQuotes = [{
 /* harmony default export */ var motivation = ({
   defaultQuotes: defaultQuotes
 });
+// EXTERNAL MODULE: ./node_modules/dayjs/dayjs.min.js
+var dayjs_min = __webpack_require__(1);
+var dayjs_min_default = /*#__PURE__*/__webpack_require__.n(dayjs_min);
+
 // CONCATENATED MODULE: ./src/background/utilities/utilities.js
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -220,22 +220,18 @@ var generateNotification = function generateNotification(defaults, userDefined) 
     message: getRandomQuote(defaults, userDefined) || 'Until we can manage time, we can manage nothing else'
   };
 };
-// CONCATENATED MODULE: ./src/background/background.js
-/* eslint-disable no-undef */
+// CONCATENATED MODULE: ./src/background/API/API.js
 
 
-
-
+var ONEMINUTE = 60 * 1000;
 var write = function write(obj) {
   var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
   return chrome.storage.sync.set(obj, callback);
 };
-
 var read = function read(keys, callback) {
   return chrome.storage.sync.get(keys, callback);
 };
-
-var background_syncTempAccess = function syncTempAccess(tempAccess) {
+var API_syncTempAccess = function syncTempAccess(tempAccess) {
   var dayjsObj = dayjs_min_default()();
   var updated = tempAccess.filter(function (temp) {
     return dayjsObj.diff(dayjs_min_default()(temp.firstAccess), 'minutes') < temp.time;
@@ -249,21 +245,6 @@ var background_syncTempAccess = function syncTempAccess(tempAccess) {
 
   return updated;
 };
-
-var lastUrl;
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-  if (lastUrl !== tab.url) {
-    lastUrl = tab.url;
-    tempAccessGlobal = background_syncTempAccess(tempAccessGlobal);
-
-    if (typeof handlePageLoad({
-      url: tab.url
-    }) !== 'undefined') {
-      chrome.tabs.reload(tabId);
-    }
-  }
-});
-
 var handleTabChange = function handleTabChange() {
   chrome.tabs.query({
     active: true,
@@ -283,8 +264,7 @@ var handleTabChange = function handleTabChange() {
     }
   });
 };
-
-var background_syncStorage = function syncStorage(rawQuotes) {
+var API_syncStorage = function syncStorage(rawQuotes) {
   var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
   read(['dangerTime', 'restTime', 'dangerReminderSwitch', 'restReminderSwitch', 'defaultQuotes', 'defaultRemindersRest', 'defaultRemindersDanger', 'copy', 'dangerList', 'tempAccess', 'userQuotes', 'userRemindersDanger', 'userRemindersRest'], function (res) {
     write({
@@ -306,8 +286,7 @@ var background_syncStorage = function syncStorage(rawQuotes) {
     });
   });
 };
-
-var background_notifyRest = function notifyRest() {
+var API_notifyRest = function notifyRest() {
   read(['defaultRemindersRest', 'userRemindersRest', 'restReminderSwitch', 'dangerList'], function (_ref) {
     var _ref$defaultReminders = _ref.defaultRemindersRest,
         defaultRemindersRest = _ref$defaultReminders === void 0 ? [] : _ref$defaultReminders,
@@ -336,8 +315,7 @@ var background_notifyRest = function notifyRest() {
     });
   });
 };
-
-var background_notifyMindless = function notifyMindless() {
+var API_notifyMindless = function notifyMindless() {
   read(['defaultRemindersDanger', 'userRemindersDanger', 'dangerReminderSwitch', 'dangerList'], function (_ref2) {
     var _ref2$defaultReminder = _ref2.defaultRemindersDanger,
         defaultRemindersDanger = _ref2$defaultReminder === void 0 ? [] : _ref2$defaultReminder,
@@ -366,84 +344,13 @@ var background_notifyMindless = function notifyMindless() {
     });
   });
 };
-
-var reload = true;
-
-var handlePageLoad = function handlePageLoad(_ref3) {
-  var url = _ref3.url;
-  var tempAccessURLs = tempAccessGlobal ? tempAccessGlobal.map(function (temp) {
-    return temp.blockPattern;
-  }) : [];
-  var mindlessURLs = dangerListGlobal || [];
-  var pattern = background_isMindless(url, mindlessURLs, tempAccessURLs);
-  var stopUrl = chrome.extension.getURL('/stop.html');
-  var isStopPage = url.includes(stopUrl);
-
-  if (isStopPage && reload) {
-    reload = false;
-    handleTabChange();
-  } else {
-    reload = true;
-  }
-
-  if (pattern) {
-    return {
-      redirectUrl: chrome.extension.getURL("stop.html?url=".concat(url, "&pattern=").concat(pattern))
-    };
-  }
-};
-
-var handleStorageChange = function handleStorageChange(changes) {
-  if (changes.dangerList) {
-    dangerListGlobal = changes.dangerList.newValue;
-  }
-
-  if (changes.tempAccess) {
-    tempAccessGlobal = changes.tempAccess.newValue;
-  }
-
-  if (changes.dangerTime) {
-    clearInterval(timerDangerGlobal);
-    timerDangerGlobal = setInterval(background_notifyMindless, ONEMINUTE * changes.dangerTime.newValue);
-  }
-
-  if (changes.restTime) {
-    clearInterval(timerRestGlobal);
-    timerRestGlobal = setInterval(background_notifyRest, ONEMINUTE * changes.restTime.newValue);
-  }
-};
-
-var ONEMINUTE = 60 * 1000;
-var timerRestGlobal;
-var timerDangerGlobal;
-var dangerListGlobal;
-var tempAccessGlobal;
-background_syncStorage(motivation, function () {
-  read(['restTime', 'dangerTime', 'dangerList', 'tempAccess'], function (_ref4) {
-    var restTime = _ref4.restTime,
-        dangerTime = _ref4.dangerTime,
-        dangerList = _ref4.dangerList,
-        tempAccess = _ref4.tempAccess;
-    timerRestGlobal = setInterval(background_notifyRest, ONEMINUTE * restTime);
-    timerDangerGlobal = setInterval(background_notifyMindless, ONEMINUTE * dangerTime);
-    dangerListGlobal = dangerList;
-    tempAccessGlobal = background_syncTempAccess(tempAccess);
-    chrome.tabs.onActivated.addListener(handleTabChange);
-    chrome.storage.onChanged.addListener(handleStorageChange);
-    chrome.webRequest.onBeforeRequest.addListener(handlePageLoad, {
-      urls: ['<all_urls>'],
-      types: ['main_frame']
-    }, ['blocking']);
-  });
-});
-
-var background_isMindless = function isMindless(url, mindlessURLs, tempAccessURLs) {
+var API_isMindless = function isMindless(url, mindlessURLs, tempAccessURLs, state) {
   if (/^chrome-extension:/.test(url) || !mindlessURLs) {
     return;
   }
 
   var isMindless = !!subStringInArray(url, mindlessURLs);
-  var longestMatch = filterSubStrings(dangerListGlobal, url).reduce(function (a, b) {
+  var longestMatch = filterSubStrings(state.dangerList, url).reduce(function (a, b) {
     return a.length > b.length ? a : b;
   }, '');
   var tempAccessPattern = arrayHasSubString(tempAccessURLs, longestMatch);
@@ -453,6 +360,101 @@ var background_isMindless = function isMindless(url, mindlessURLs, tempAccessURL
     return longestMatch;
   }
 };
+var handleStorageChange = function handleStorageChange(changes, currentState) {
+  console.log("handleStorageChange", currentState);
+
+  if (changes.dangerList) {
+    currentState.dangerList = changes.dangerList.newValue;
+  }
+
+  if (changes.tempAccess) {
+    currentState.tempAccess = changes.tempAccess.newValue;
+  }
+
+  if (changes.dangerTime) {
+    clearInterval(currentState.timerDanger);
+    currentState.timerDanger = setInterval(API_notifyMindless, ONEMINUTE * changes.dangerTime.newValue);
+  }
+
+  if (changes.restTime) {
+    clearInterval(currentState.timerRest);
+    currentState.timerRest = setInterval(API_notifyRest, ONEMINUTE * changes.restTime.newValue);
+  }
+};
+var handlePageLoad = function handlePageLoad(_ref3, currentState) {
+  var url = _ref3.url;
+  console.log("handlePageLoad", currentState);
+  var tempAccessURLs = currentState.tempAccess ? currentState.tempAccess.map(function (temp) {
+    return temp.blockPattern;
+  }) : [];
+  var mindlessURLs = currentState.dangerList || [];
+  var pattern = API_isMindless(url, mindlessURLs, tempAccessURLs, currentState);
+  var stopUrl = chrome.extension.getURL('/stop.html');
+  var isStopPage = url.includes(stopUrl);
+
+  if (isStopPage && currentState.reload) {
+    currentState.reload = false;
+    handleTabChange();
+  } else {
+    currentState.reload = true;
+  }
+
+  if (pattern) {
+    return {
+      redirectUrl: chrome.extension.getURL("stop.html?url=".concat(url, "&pattern=").concat(pattern))
+    };
+  }
+};
+// CONCATENATED MODULE: ./src/background/background.js
+/* eslint-disable no-undef */
+
+
+var background_ONEMINUTE = 60 * 1000;
+var background_state = {
+  tempAccess: undefined,
+  timerRest: undefined,
+  timerDanger: undefined,
+  dangerList: undefined,
+  reload: true,
+  lastUrl: undefined
+};
+chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+  if (background_state.lastUrl !== tab.url) {
+    background_state.lastUrl = tab.url;
+    background_state.tempAccess = API_syncTempAccess(background_state.tempAccess);
+
+    if (typeof handlePageLoad({
+      url: tab.url
+    }, background_state) !== 'undefined') {
+      chrome.tabs.reload(tabId);
+    }
+  }
+});
+API_syncStorage(motivation, function () {
+  read(['restTime', 'dangerTime', 'dangerList', 'tempAccess'], function (_ref) {
+    var restTime = _ref.restTime,
+        dangerTime = _ref.dangerTime,
+        dangerList = _ref.dangerList,
+        tempAccess = _ref.tempAccess;
+    background_state.timerRest = setInterval(API_notifyRest, background_ONEMINUTE * restTime);
+    background_state.timerDanger = setInterval(API_notifyMindless, background_ONEMINUTE * dangerTime);
+    background_state.dangerList = dangerList;
+    background_state.tempAccess = API_syncTempAccess(tempAccess);
+    chrome.tabs.onActivated.addListener(handleTabChange);
+    chrome.storage.onChanged.addListener(function (changes) {
+      return handleStorageChange(changes, background_state);
+    });
+    chrome.webRequest.onBeforeRequest.addListener(function (_ref2) {
+      var url = _ref2.url;
+      return handlePageLoad({
+        url: url
+      }, background_state);
+    }, {
+      urls: ['<all_urls>'],
+      types: ['main_frame']
+    }, ['blocking']);
+  });
+});
 
 /***/ })
 

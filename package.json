@@ -7,7 +7,7 @@
     "watch": "webpack --watch",
     "build": "webpack --config webpack.config.js",
     "test": "jest --watch --collectCoverage",
-    "start":  "node -r esm"
+    "start": "node -r esm"
   },
   "repository": {
     "type": "git",
