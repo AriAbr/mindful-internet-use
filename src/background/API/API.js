@@ -12,11 +12,8 @@ const ONEMINUTE = 60 * 1000;
 
 
 
-export const write = (obj, callback = () => { }) =>
-    chrome.storage.sync.set(obj, callback);
 
-export const read = (keys, callback) =>
-    chrome.storage.sync.get(keys, callback);
+
 
 export const syncTempAccess = (tempAccess) => {
     const dayjsObj = dayjs();
@@ -25,7 +22,7 @@ export const syncTempAccess = (tempAccess) => {
     );
 
     if (updated.length < tempAccess.length) {
-        write({ tempAccess: updated });
+        chrome.storage.sync.set({ tempAccess: updated });
     }
     return updated;
 };
@@ -51,7 +48,7 @@ export const handleTabChange = () => {
 };
 
 export const syncStorage = (rawQuotes, callback = () => { }) => {
-    read(
+    chrome.storage.sync.get(
         [
             'dangerTime',
             'restTime',
@@ -68,7 +65,7 @@ export const syncStorage = (rawQuotes, callback = () => { }) => {
             'userRemindersRest',
         ],
         (res) => {
-            write(
+            chrome.storage.sync.set(
                 {
                     userQuotes: res.userQuotes || [],
                     userRemindersDanger: res.userRemindersDanger || [],
@@ -105,7 +102,7 @@ export const syncStorage = (rawQuotes, callback = () => { }) => {
 
 export const notifyRest = () => {
 
-    read(
+    chrome.storage.sync.get(
         [
             'defaultRemindersRest',
             'userRemindersRest',
@@ -143,7 +140,7 @@ export const notifyRest = () => {
 };
 
 export const notifyMindless = () => {
-    read(
+    chrome.storage.sync.get(
         [
             'defaultRemindersDanger',
             'userRemindersDanger',

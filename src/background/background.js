@@ -2,7 +2,7 @@
 
 import motivations from '../motivation';
 import {
-  read,
+
   syncTempAccess,
   handleTabChange,
   syncStorage,
@@ -34,7 +34,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 });
 
 syncStorage(motivations, () => {
-  read(
+  chrome.storage.sync.get(
     ['restTime', 'dangerTime', 'dangerList', 'tempAccess'],
     ({ restTime, dangerTime, dangerList, tempAccess }) => {
       state.timerRest = setInterval(notifyRest, ONEMINUTE * restTime);
@@ -55,4 +55,5 @@ syncStorage(motivations, () => {
   );
 });
 
-}
+
+
