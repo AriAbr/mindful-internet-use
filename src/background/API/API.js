@@ -12,13 +12,12 @@ const ONEMINUTE = 60 * 1000;
 
 
 
-
-
-
 export const syncTempAccess = (tempAccess) => {
+
     const dayjsObj = dayjs();
+
     const updated = tempAccess.filter(
-        (temp) => dayjsObj.diff(dayjs(temp.firstAccess), 'minutes') < temp.time
+        (temp) => dayjsObj.diff(dayjs(temp.firstAccess), 'minutes') <= temp.time
     );
 
     if (updated.length < tempAccess.length) {

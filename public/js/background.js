@@ -224,13 +224,6 @@ var generateNotification = function generateNotification(defaults, userDefined) 
 
 
 var ONEMINUTE = 60 * 1000;
-var write = function write(obj) {
-  var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
-  return chrome.storage.sync.set(obj, callback);
-};
-var read = function read(keys, callback) {
-  return chrome.storage.sync.get(keys, callback);
-};
 var API_syncTempAccess = function syncTempAccess(tempAccess) {
   var dayjsObj = dayjs_min_default()();
   var updated = tempAccess.filter(function (temp) {
@@ -238,7 +231,7 @@ var API_syncTempAccess = function syncTempAccess(tempAccess) {
   });
 
   if (updated.length < tempAccess.length) {
-    write({
+    chrome.storage.sync.set({
       tempAccess: updated
     });
   }
@@ -266,8 +259,8 @@ var handleTabChange = function handleTabChange() {
 };
 var API_syncStorage = function syncStorage(rawQuotes) {
   var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
-  read(['dangerTime', 'restTime', 'dangerReminderSwitch', 'restReminderSwitch', 'defaultQuotes', 'defaultRemindersRest', 'defaultRemindersDanger', 'copy', 'dangerList', 'tempAccess', 'userQuotes', 'userRemindersDanger', 'userRemindersRest'], function (res) {
-    write({
+  chrome.storage.sync.get(['dangerTime', 'restTime', 'dangerReminderSwitch', 'restReminderSwitch', 'defaultQuotes', 'defaultRemindersRest', 'defaultRemindersDanger', 'copy', 'dangerList', 'tempAccess', 'userQuotes', 'userRemindersDanger', 'userRemindersRest'], function (res) {
+    chrome.storage.sync.set({
       userQuotes: res.userQuotes || [],
       userRemindersDanger: res.userRemindersDanger || [],
       userRemindersRest: res.userRemindersRest || [],
@@ -287,7 +280,7 @@ var API_syncStorage = function syncStorage(rawQuotes) {
   });
 };
 var API_notifyRest = function notifyRest() {
-  read(['defaultRemindersRest', 'userRemindersRest', 'restReminderSwitch', 'dangerList'], function (_ref) {
+  chrome.storage.sync.get(['defaultRemindersRest', 'userRemindersRest', 'restReminderSwitch', 'dangerList'], function (_ref) {
     var _ref$defaultReminders = _ref.defaultRemindersRest,
         defaultRemindersRest = _ref$defaultReminders === void 0 ? [] : _ref$defaultReminders,
         _ref$userRemindersRes = _ref.userRemindersRest,
@@ -316,7 +309,7 @@ var API_notifyRest = function notifyRest() {
   });
 };
 var API_notifyMindless = function notifyMindless() {
-  read(['defaultRemindersDanger', 'userRemindersDanger', 'dangerReminderSwitch', 'dangerList'], function (_ref2) {
+  chrome.storage.sync.get(['defaultRemindersDanger', 'userRemindersDanger', 'dangerReminderSwitch', 'dangerList'], function (_ref2) {
     var _ref2$defaultReminder = _ref2.defaultRemindersDanger,
         defaultRemindersDanger = _ref2$defaultReminder === void 0 ? [] : _ref2$defaultReminder,
         _ref2$userRemindersDa = _ref2.userRemindersDanger,
@@ -425,13 +418,12 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 
     if (typeof handlePageLoad({
       url: tab.url
-    }, background_state) !== 'undefined') {
-      chrome.tabs.reload(tabId);
+    }, background_state) !== 'undefined') {// chrome.tabs.reload(tabId);
     }
   }
 });
 API_syncStorage(motivation, function () {
-  read(['restTime', 'dangerTime', 'dangerList', 'tempAccess'], function (_ref) {
+  chrome.storage.sync.get(['restTime', 'dangerTime', 'dangerList', 'tempAccess'], function (_ref) {
     var restTime = _ref.restTime,
         dangerTime = _ref.dangerTime,
         dangerList = _ref.dangerList,
