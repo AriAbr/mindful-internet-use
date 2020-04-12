@@ -227,7 +227,7 @@ var ONEMINUTE = 60 * 1000;
 var API_syncTempAccess = function syncTempAccess(tempAccess) {
   var dayjsObj = dayjs_min_default()();
   var updated = tempAccess.filter(function (temp) {
-    return dayjsObj.diff(dayjs_min_default()(temp.firstAccess), 'minutes') < temp.time;
+    return dayjsObj.diff(dayjs_min_default()(temp.firstAccess), 'minutes') <= temp.time;
   });
 
   if (updated.length < tempAccess.length) {
@@ -418,7 +418,8 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 
     if (typeof handlePageLoad({
       url: tab.url
-    }, background_state) !== 'undefined') {// chrome.tabs.reload(tabId);
+    }, background_state) !== 'undefined') {
+      chrome.tabs.reload(tabId);
     }
   }
 });

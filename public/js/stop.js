@@ -343,7 +343,8 @@ var TimerButton = /*#__PURE__*/function () {
   m.parentNode.insertBefore(a, m);
 })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-ga('create', 'UA-162836929-1', 'auto'); // Modifications:
+ga('create', 'UA-162836929-1', 'auto');
+ga('require', 'displayfeatures'); // Modifications:
 
 ga('set', 'checkProtocolTask', null); // Disables file protocol checking.
 
@@ -493,9 +494,15 @@ function handleNotCopying() {
   makeTempAccess();
 }
 
+function randomDisplay(element, howOften) {
+  element.style.display = Math.random() < howOften ? "block" : "none";
+}
+
 document.querySelector('.logo').addEventListener('click', goToOptions);
 document.querySelector('.accessBtn--close').addEventListener('click', closeTab);
 document.querySelector('.accessBtn--options').addEventListener('click', goToOptions);
+var reviewLink = document.querySelector(".stop-container__review");
+randomDisplay(reviewLink, 0.2);
 console.log(window.location.href);
 
 /***/ })

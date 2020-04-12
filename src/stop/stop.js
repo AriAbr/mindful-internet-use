@@ -28,6 +28,9 @@ ga('require', 'displayfeatures');
 ga('set', 'checkProtocolTask', null); // Disables file protocol checking.
 ga('send', 'pageview', '/stop'); // Set page, avoiding rejection due to chrome-extension protocol
 
+
+
+
 const closeTab = (e) => {
   chrome.tabs.getCurrent((tab) => {
     chrome.tabs.remove(tab.id, () => { });
@@ -181,10 +184,18 @@ function handleNotCopying() {
   makeTempAccess();
 }
 
+function randomDisplay(element, howOften) {
+  element.style.display = Math.random() < howOften ? "block" : "none"
+}
+
+
 document.querySelector('.logo').addEventListener('click', goToOptions);
 document.querySelector('.accessBtn--close').addEventListener('click', closeTab);
 document
   .querySelector('.accessBtn--options')
   .addEventListener('click', goToOptions);
+
+const reviewLink = document.querySelector(".stop-container__review")
+randomDisplay(reviewLink, 0.2)
 
 console.log(window.location.href);

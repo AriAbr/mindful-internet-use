@@ -761,7 +761,8 @@ var Navigation = /*#__PURE__*/function () {
   m.parentNode.insertBefore(a, m);
 })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-ga('create', 'UA-162836929-1', 'auto'); // Modifications:
+ga('create', 'UA-162836929-1', 'auto');
+ga('require', 'displayfeatures'); // Modifications:
 
 ga('set', 'checkProtocolTask', null); // Disables file protocol checking.
 
