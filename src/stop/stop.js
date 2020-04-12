@@ -23,14 +23,14 @@ import createTimerButton from '../components/createTimerButton';
 );
 
 ga('create', 'UA-162836929-1', 'auto');
-
+ga('require', 'displayfeatures');
 // Modifications:
 ga('set', 'checkProtocolTask', null); // Disables file protocol checking.
 ga('send', 'pageview', '/stop'); // Set page, avoiding rejection due to chrome-extension protocol
 
 const closeTab = (e) => {
   chrome.tabs.getCurrent((tab) => {
-    chrome.tabs.remove(tab.id, () => {});
+    chrome.tabs.remove(tab.id, () => { });
   });
 };
 

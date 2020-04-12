@@ -25,7 +25,7 @@ import createNavigation from '../components/createNavigation';
 );
 
 ga('create', 'UA-162836929-1', 'auto');
-
+ga('require', 'displayfeatures');
 // Modifications:
 ga('set', 'checkProtocolTask', null); // Disables file protocol checking.
 ga('send', 'pageview', '/options'); // Set page, avoiding rejection due to chrome-extension protocol
