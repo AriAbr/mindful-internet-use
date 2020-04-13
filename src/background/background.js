@@ -4,7 +4,7 @@ import motivations from '../motivation';
 import {
 
   syncTempAccess,
-  handleTabChange,
+  reloadIfStopPage,
   syncStorage,
   notifyMindless,
   notifyRest,
@@ -41,7 +41,7 @@ syncStorage(motivations, () => {
       state.timerDanger = setInterval(notifyMindless, ONEMINUTE * dangerTime);
       state.dangerList = dangerList;
       state.tempAccess = syncTempAccess(tempAccess);
-      chrome.tabs.onActivated.addListener(handleTabChange);
+      chrome.tabs.onActivated.addListener(reloadIfStopPage);
       chrome.storage.onChanged.addListener((changes) => handleStorageChange(changes, state));
       chrome.webRequest.onBeforeRequest.addListener(
         ({ url }) => handlePageLoad({ url }, state),

@@ -1,4 +1,4 @@
-const analytics = (page) => {
+export default analytics = (page) => {
     (function (i, s, o, g, r, a, m) {
         i.GoogleAnalyticsObject = r;
         (i[r] =

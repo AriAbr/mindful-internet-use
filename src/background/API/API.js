@@ -26,7 +26,7 @@ export const syncTempAccess = (tempAccess) => {
     return updated;
 };
 
-export const handleTabChange = () => {
+export const reloadIfStopPage = () => {
     chrome.tabs.query(
         {
             active: true,
@@ -34,10 +34,13 @@ export const handleTabChange = () => {
         },
 
         (tabs) => {
+
             if (!(tabs && tabs[0] && tabs[0].url)) {
                 return;
             }
+
             const { url } = tabs[0];
+
             const isStopPage = url.includes(chrome.extension.getURL('/stop.html'));
             if (isStopPage) {
                 chrome.tabs.update(tabs[0].id, { url });
@@ -231,8 +234,7 @@ export const handlePageLoad = ({ url }, currentState) => {
 
     if (isStopPage && currentState.reload) {
         currentState.reload = false;
-
-        handleTabChange();
+        reloadIfStopPage();
     } else {
         currentState.reload = true;
     }
