@@ -7,12 +7,12 @@ class GeneralSwitch {
   constructor(id, containerId, key) {
     this.switch = document.getElementById(id);
     this.container = document.getElementById(containerId);
-    // console.log('container', this.container);
+
     this.key = key;
     this.setupHtml();
 
     if (this.key) {
-      // console.log('this.key', this.key);
+
       this.loadSwitchValue();
       this.switch.children[0].children[0].addEventListener("click", () => {
         this.switchHandler();
@@ -27,7 +27,7 @@ class GeneralSwitch {
   setCallback(callbackChange) {
     this.callbackChange = callbackChange;
     this.switch.children[0].children[0].addEventListener("click", () => {
-      // console.log(' this.callbackChange ', this.callbackChange);
+
       this.callbackChange();
     });
   }
@@ -46,7 +46,7 @@ class GeneralSwitch {
 
   switchHandler() {
     chrome.storage.sync.get([this.key], result => {
-      // console.log(!result[this.key]);
+
       utilities.updateStorageValue(this.key, !result[this.key], () => {
         utilities.handleClass(
           result[this.key],

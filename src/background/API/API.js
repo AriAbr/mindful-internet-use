@@ -199,7 +199,7 @@ export const isMindless = (url, mindlessURLs, tempAccessURLs, state) => {
 };
 
 export const handleStorageChange = (changes, currentState) => {
-    console.log("handleStorageChange", currentState)
+
     if (changes.dangerList) {
         currentState.dangerList = changes.dangerList.newValue;
     }
@@ -223,7 +223,7 @@ export const handleStorageChange = (changes, currentState) => {
 };
 
 export const handlePageLoad = ({ url }, currentState) => {
-    console.log("handlePageLoad", currentState)
+
     const tempAccessURLs = currentState.tempAccess
         ? currentState.tempAccess.map((temp) => temp.blockPattern)
         : [];

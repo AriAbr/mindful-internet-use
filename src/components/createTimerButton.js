@@ -5,7 +5,7 @@ class TimerButton {
     this.container = document.getElementById(id);
     this.name = name;
     this.onchange = onchange;
-    // console.log(this.container);
+
     this.minutes = [5, 10, 15, 30, 45, 60];
     // set up handler
     document.addEventListener("click", this.closeAllSelect);
@@ -45,7 +45,7 @@ class TimerButton {
       `custom-select-access-${this.name}`
     );
 
-    // console.log(this.name, x);
+
     for (i = 0; i < x.length; i++) {
       selElmnt = x[i].getElementsByTagName("select")[0];
 
@@ -66,7 +66,7 @@ class TimerButton {
         c.setAttribute("minute", this.minutes[j - 1]);
         c.innerHTML = selElmnt.options[j].innerHTML;
 
-        c.addEventListener("click", function(e) {
+        c.addEventListener("click", function (e) {
           /* When an item is clicked, update the original select box,
             and the selected item: */
           self.timeSet(e);
@@ -98,7 +98,7 @@ class TimerButton {
       }
       x[i].appendChild(b);
 
-      a.addEventListener("click", function(e) {
+      a.addEventListener("click", function (e) {
         /* When the select box is clicked, close any other select boxes,
         and open/close the current select box: */
         e.stopPropagation();

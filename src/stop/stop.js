@@ -84,7 +84,7 @@ chrome.storage.sync.get(['defaultQuotes', 'userQuotes', 'copy'], (result) => {
     }
   }
 
-  // console.log(motivationSplit);
+
   function handleCopying(motivationSplit) {
     motivationNode.insertAdjacentElement(
       'afterbegin',
@@ -174,4 +174,4 @@ document
 const reviewLink = document.querySelector(".stop-container__review")
 randomDisplay(reviewLink, 0.2)
 
-console.log(window.location.href);
+

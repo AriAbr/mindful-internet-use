@@ -6,7 +6,7 @@ export default {
     return template.content.firstChild;
   },
   handleClass(shouldContain, className, element) {
-    //   //console.log(shouldContain, className, element);
+    
     if (shouldContain) {
       element.classList.add(className);
     } else {

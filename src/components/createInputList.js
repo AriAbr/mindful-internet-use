@@ -3,8 +3,8 @@ import utilities from '../utilities';
 export default (id, storageKey, callbackAfterSetStorage) => new InputList(id, storageKey, callbackAfterSetStorage);
 
 class InputList {
-  constructor(id, storageKey, callbackAfterSetStorage = () => {}) {
-    // console.log(`$Inputlist: id=${id} storageKey=${storageKey}`);
+  constructor(id, storageKey, callbackAfterSetStorage = () => { }) {
+
 
     this.container = document.getElementById(id);
     this.list = this.setupHTML();
@@ -58,7 +58,7 @@ class InputList {
     }
 
     chrome.storage.sync.get([this.storageKey], (result) => {
-      // console.log('this.list:', this.list);
+
       const elements = this.list.children;
       const items = result[this.storageKey] ? result[this.storageKey] : [];
 

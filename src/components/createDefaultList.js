@@ -15,7 +15,7 @@ class DefaultList {
   }
 
   render() {
-    // console.log('this.generalSwitch', this.generalSwitch);
+
     chrome.storage.sync.get([this.storageKey], (result) => {
       const items = result[this.storageKey];
 
@@ -61,11 +61,11 @@ class DefaultList {
     chrome.storage.sync.get([this.storageKey], (result) => {
       result[this.storageKey];
       result[this.storageKey] = result[this.storageKey].map((elem) => {
-        // console.log('elem', elem);
+
         elem.show = this.generalSwitch.isChecked();
         return elem;
       });
-      // console.log(' result[this.storageKey]', result[this.storageKey]);
+
       chrome.storage.sync.set({ [this.storageKey]: result[this.storageKey] }, () => {
         this.render(result[this.storageKey]);
       });
@@ -76,13 +76,13 @@ class DefaultList {
     this.container.innerHTML = `
       <ul  class="default-list-list">
       </ul> `;
-    // console.log(this.container.children);
+
     return this.container.children[0];
   }
 
   swithHandler(e) {
     const index = e.target.getAttribute('data-index');
-    // console.log('Switch:', index);
+
     if (!index) {
       return;
     }
