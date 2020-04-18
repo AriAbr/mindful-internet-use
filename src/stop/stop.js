@@ -7,6 +7,60 @@ setUpGoogleAnalytics("/stop")
 
 
 
+function breathe(numBreaths) {
+  // let oneBreathePercentage = 100 / numBreaths
+  let counter = 0;
+  const container = document.getElementById('breathe-container');
+  const actionText = document.getElementById('breathe-text-action');
+  const text = document.getElementById('breathe-text-action--2');
+  text.innerText = "You will get access in a moment"
+
+  // const progressCircle = document.getElementById('progress-circle');
+
+  const totalTime = 10000;
+  const breatheTime = (totalTime / 5) * 2;
+  const holdTime = totalTime / 5;
+
+  breathAnimation();
+
+  // const progressIntervalID = setInterval(() => {
+  //   counter += 1 / 1000
+  //   if (counter > numBreaths) {
+  //     clearInterval(progressIntervalID)
+  //     clearInterval(breathingIntervalID)
+  //     setupAfterBreaths()
+  //   }
+  //   progressCircle.style.setProperty("--percentage-done", counter * oneBreathePercentage + "%")
+  // }, totalTime / 1000)
+
+  function breathAnimation() {
+
+
+    if (counter === numBreaths) {
+      clearInterval(breathingIntervalID)
+      setupAfterBreaths()
+    }
+    actionText.innerText = 'Breathe In';
+    container.className = 'breathe-container grow';
+
+
+
+    setTimeout(() => {
+      actionText.innerText = 'Hold';
+
+      setTimeout(() => {
+        actionText.innerText = 'Breathe Out';
+        container.className = 'breathe-container shrink';
+      }, holdTime);
+
+    }, breatheTime);
+    counter++
+  }
+
+  const breathingIntervalID = setInterval(breathAnimation, totalTime);
+}
+
+
 const closeTab = (e) => {
   chrome.tabs.getCurrent((tab) => {
     chrome.tabs.remove(tab.id, () => { });
@@ -18,20 +72,11 @@ const goToOptions = () => {
 };
 
 chrome.storage.sync.get(['copy'], ({ copy }) => {
-  const breathCounter = document.getElementById('breathCounter');
 
-  let breathsLeft = copy ? 20 : 30;
 
-  breathCounter.textContent = breathsLeft;
+  let numBreaths = copy ? 2 : 4;
+  breathe(numBreaths)
 
-  const timer = setInterval(() => {
-    breathsLeft--;
-    breathCounter.textContent = breathsLeft;
-    if (breathsLeft === 0) {
-      clearInterval(timer);
-      setupAfterBreaths();
-    }
-  }, 1000);
 });
 
 let currentIndex = 0;
@@ -151,7 +196,7 @@ function makeTempAccess() {
 }
 
 function setupAfterBreaths() {
-  document.querySelector('.breath').style.display = 'none';
+  document.querySelector('.breathe-container').style.display = 'none';
   document.getElementById('afterBreath').style.display = 'flex';
 }
 
