@@ -1,6 +1,15 @@
 import setUpGoogleAnalytics from "../analytics"
+import ToggleSwitch from "../components/toggle-switch"
 
 setUpGoogleAnalytics("/page")
+
+
+
+
+
+const disableSwitch = new ToggleSwitch((value) => console.log(value))
+
+document.querySelector(".popup__items").appendChild(disableSwitch.render())
 
 document
   .getElementById('addToDanger')
