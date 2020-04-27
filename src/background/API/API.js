@@ -65,6 +65,7 @@ export const syncStorage = (rawQuotes, callback = () => { }) => {
             'userQuotes',
             'userRemindersDanger',
             'userRemindersRest',
+            'isMIUEnabled'
         ],
         (res) => {
             chrome.storage.sync.set(
@@ -94,6 +95,7 @@ export const syncStorage = (rawQuotes, callback = () => { }) => {
                             ? false
                             : res.restReminderSwitch,
                     copy: typeof res.copy === 'undefined' ? false : res.copy,
+                    isMIUEnabled: typeof res.isMIUEnabled === 'undefined' ? false : res.isMIUEnabled,
                 },
                 () => callback()
             );
@@ -224,6 +226,11 @@ export const handleStorageChange = (changes, currentState) => {
 
 export const handlePageLoad = ({ url }, currentState) => {
 
+
+
+
+
+
     const tempAccessURLs = currentState.tempAccess
         ? currentState.tempAccess.map((temp) => temp.blockPattern)
         : [];
@@ -239,7 +246,9 @@ export const handlePageLoad = ({ url }, currentState) => {
         currentState.reload = true;
     }
 
+
     if (pattern) {
+
         return {
             redirectUrl: chrome.extension.getURL(
                 `stop.html?url=${url}&pattern=${pattern}`
@@ -247,3 +256,16 @@ export const handlePageLoad = ({ url }, currentState) => {
         };
     }
 };
+
+function getMIUEnableValue() {
+    return new Promise((resolve, reject) => {
+        chrome.storage.sync.get(['isMIUEnabled'], (result, error) => {
+
+            if (error) {
+                reject(error)
+            } else {
+                resolve(result.isMIUEnabled)
+            }
+        })
+    })
+}

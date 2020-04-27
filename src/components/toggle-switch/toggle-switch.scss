@@ -38,9 +38,9 @@
   z-index: 20;
   text-align: center;
   transition: all 0.15s ease;
-  
-  
 }
+
+
   
   .toggle-switch__label::before {
     content:  "";
@@ -55,8 +55,9 @@
     border-bottom-left-radius: 1px;
     color: white;
     transition: all 0.25s ease;
-    
   }
+
+
  
   .toggle-switch__input:checked + .toggle-switch__label::before {
     border-radius: 0;

@@ -1,20 +1,29 @@
+
+
 import setUpGoogleAnalytics from "../analytics"
 import ToggleSwitch from "../components/toggle-switch"
 
-setUpGoogleAnalytics("/page")
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  setUpGoogleAnalytics("/page")
+
+  getMIUEnableValue().then(isMIUEnabled => {
+    const disableSwitch = new ToggleSwitch({
+      onClick: (value) => setMIUEnableValue(value),
+      isChecked: isMIUEnabled
+    })
+
+    document.querySelector(".popup__items").appendChild(disableSwitch.render())
+  })
 
 
+  document
+    .getElementById('addToDanger')
+    .addEventListener('click', addActiveUrlToDanger);
+  document.getElementById('goToOptions').addEventListener('click', goToOptions);
 
-
-
-const disableSwitch = new ToggleSwitch((value) => console.log(value))
-
-document.querySelector(".popup__items").appendChild(disableSwitch.render())
-
-document
-  .getElementById('addToDanger')
-  .addEventListener('click', addActiveUrlToDanger);
-document.getElementById('goToOptions').addEventListener('click', goToOptions);
+})
 
 function goToOptions() {
   chrome.tabs.create({ url: 'options.html' });
@@ -44,4 +53,24 @@ function addActiveUrlToDanger(e) {
       }
     );
   });
+}
+
+
+function getMIUEnableValue() {
+  return new Promise((resolve, reject) => {
+    chrome.storage.sync.get(['isMIUEnabled'], (result, error) => {
+
+      if (error) {
+        reject(error)
+      } else {
+        resolve(result.isMIUEnabled)
+      }
+    })
+  })
+}
+
+
+
+function setMIUEnableValue(value) {
+  chrome.storage.sync.set({ isMIUEnabled: value }, () => { });
 }

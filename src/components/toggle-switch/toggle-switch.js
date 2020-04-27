@@ -2,40 +2,41 @@ import htmlToElement from "../../utils/htmlToElement"
 import { nanoid } from 'nanoid'
 
 
+
 class ToggleSwitch {
 
-    constructor(onClick) {
+    constructor({ onClick, isChecked = false }) {
         this.id = nanoid()
         this.onClick = onClick
-
-
-
-
+        this.isChecked = isChecked
+        this.element = null;
     }
 
     handleClick(e) {
+        this.isChecked = e.target.checked
+        this.onClick(this.isChecked)
 
-        this.onClick(e.target.checked)
     }
 
     render() {
 
-        const element = htmlToElement(`
+        if (!this.element) {
+            this.element = htmlToElement(`
             <div class="toggle-switch">
-                <input checked id="${this.id}" type="checkbox" class="toggle-switch__input" />
+                <input id="${this.id}" type="checkbox" class="toggle-switch__input" />
                 <label for="${this.id}"  class="toggle-switch__label">
                     <span class="toggle-switch__label--off">OFF</span>
                     <span class="toggle-switch__label--on">ON</span>
                   
                 </label>
             </div>
-          
         `)
+            const input = this.element.querySelector("input")
+            input.checked = this.isChecked
+            input.addEventListener('click', this.handleClick.bind(this))
+        }
 
-
-        element.querySelector("input").addEventListener('click', this.handleClick.bind(this))
-
-        return element
+        return this.element
     }
 }
 
