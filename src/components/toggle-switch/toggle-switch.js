@@ -14,6 +14,7 @@ class ToggleSwitch {
 
     handleClick(e) {
         this.isChecked = e.target.checked
+
         this.onClick(this.isChecked)
 
     }

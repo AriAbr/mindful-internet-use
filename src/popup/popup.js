@@ -10,7 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   getMIUEnableValue().then(isMIUEnabled => {
     const disableSwitch = new ToggleSwitch({
-      onClick: (value) => setMIUEnableValue(value),
+      onClick: (value) => setAndSendMIUEnableValue(value),
+
       isChecked: isMIUEnabled
     })
 
@@ -71,6 +72,6 @@ function getMIUEnableValue() {
 
 
 
-function setMIUEnableValue(value) {
-  chrome.storage.sync.set({ isMIUEnabled: value }, () => { });
+function setAndSendMIUEnableValue(value) {
+  chrome.storage.sync.set({ isMIUEnabled: value }, () => { })
 }

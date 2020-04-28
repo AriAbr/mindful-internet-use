@@ -20,6 +20,7 @@ const state = {
   dangerList: undefined,
   reload: true,
   lastUrl: undefined,
+  isMIUEnabled: undefined
 }
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
@@ -35,12 +36,14 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
 syncStorage(motivations, () => {
   chrome.storage.sync.get(
-    ['restTime', 'dangerTime', 'dangerList', 'tempAccess'],
-    ({ restTime, dangerTime, dangerList, tempAccess }) => {
+    ['restTime', 'dangerTime', 'dangerList', 'tempAccess', 'isMIUEnabled'],
+    ({ restTime, dangerTime, dangerList, tempAccess, isMIUEnabled }) => {
+
       state.timerRest = setInterval(notifyRest, ONEMINUTE * restTime);
       state.timerDanger = setInterval(notifyMindless, ONEMINUTE * dangerTime);
       state.dangerList = dangerList;
       state.tempAccess = syncTempAccess(tempAccess);
+      state.isMIUEnabled = isMIUEnabled
       chrome.tabs.onActivated.addListener(reloadIfStopPage);
       chrome.storage.onChanged.addListener((changes) => handleStorageChange(changes, state));
       chrome.webRequest.onBeforeRequest.addListener(
