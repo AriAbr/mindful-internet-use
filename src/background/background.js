@@ -26,11 +26,8 @@ const state = {
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (state.lastUrl !== tab.url) {
     state.lastUrl = tab.url;
-    state.tempAccess = syncTempAccess(state.tempAccess);
-
-    if (typeof handlePageLoad({ url: tab.url }, state) !== 'undefined') {
-      chrome.tabs.reload(tabId);
-    }
+    state.tempAccess = syncTempAccess(state.tempAccess)
+    handlePageLoad({ url: tab.url, tabId}, state)
   }
 });
 

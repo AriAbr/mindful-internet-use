@@ -241,7 +241,7 @@ export const handleStorageChange = (changes, currentState) => {
   }
 }
 
-export const handlePageLoad = ({ url }, currentState) => {
+export const handlePageLoad = ({ url, tabId }, currentState) => {
   const tempAccessURLs = currentState.tempAccess
     ? currentState.tempAccess.map((temp) => temp.blockPattern)
     : []
@@ -258,11 +258,7 @@ export const handlePageLoad = ({ url }, currentState) => {
   }
 
   if (pattern && currentState.isMIUEnabled) {
-    console.log("currentState.isMIUEnabled:", currentState.isMIUEnabled)
-    return {
-      redirectUrl: chrome.extension.getURL(
-        `stop.html?url=${url}&pattern=${pattern}`
-      ),
-    }
+      chrome.tabs.update(tabId, {url: chrome.extension
+              .getURL(`stop.html?url=${url}&pattern=${pattern}`)});
   }
 }
