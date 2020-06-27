@@ -12,8 +12,8 @@ function breathe(numBreaths) {
   let counter = 0;
   const container = document.getElementById('breathe-container');
   const actionText = document.getElementById('breathe-text-action');
-  const text = document.getElementById('breathe-text-action--2');
-  text.innerText = "You will get access in a moment"
+  const breathLeftText = document.getElementById('breathe-text-action--2');
+  breathLeftText.innerText = numBreaths;
 
   // const progressCircle = document.getElementById('progress-circle');
 
@@ -34,7 +34,7 @@ function breathe(numBreaths) {
   // }, totalTime / 1000)
 
   function breathAnimation() {
-
+    breathLeftText.innerText = numBreaths - counter; 
 
     if (counter === numBreaths) {
       clearInterval(breathingIntervalID)
@@ -55,6 +55,8 @@ function breathe(numBreaths) {
 
     }, breatheTime);
     counter++
+  
+    
   }
 
   const breathingIntervalID = setInterval(breathAnimation, totalTime);
