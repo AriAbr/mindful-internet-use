@@ -4,104 +4,154 @@ import createTimerList from '../components/createTimerList';
 import createGeneralSwitch from '../components/createGeneralSwitch';
 import createNavigation from '../components/createNavigation';
 import setUpGoogleAnalytics from "../analytics"
+import selectList from "../components/selectList"
+
 
 setUpGoogleAnalytics("/stop")
 
 try {
-  const timerListDanger = createTimerList('timerListDanger', 'DANGER');
-  const timerListRest = createTimerList('timerListRest', 'REST');
+    const timerListDanger = createTimerList('timerListDanger', 'DANGER');
+    const numBreathSelector = selectList(
+        "numBreathSelector",
+        [
+            {
+                value: 1,
+                label: '1'
+            },
+            {
+                value: 1,
+                label: '1'
+            },
+            {
+                value: 2,
+                label: '2'
+            },
+            {
+                value: 3,
+                label: '3'
+            }, {
+            value: 4,
+            label: '4'
+        },{
+            value: 5,
+            label: '5'
+        },
+            {
+                value: 6,
+                label: '6'
+            },
+            {
+                value: 7,
+                label: '7'
+            },
+            {
+                value: 8,
+                label: '8'
+            }, {
+            value: 9,
+            label: '9'
+        },{
+            value: 10,
+            label: '10'
+        }
 
-  const dangerURLs = createInputList('danger-list', 'dangerList');
+        ],
+        ''
+        )
+    ;
+    const timerListRest = createTimerList('timerListRest', 'REST');
 
-  const userDangerReminders = createInputList(
-    'reminders-user-danger',
-    'userRemindersDanger'
-  );
+    const dangerURLs = createInputList('danger-list', 'dangerList');
 
-  const userRestReminders = createInputList(
-    'reminders-user-rest',
-    'userRemindersRest'
-  );
+    const userDangerReminders = createInputList(
+        'reminders-user-danger',
+        'userRemindersDanger'
+    );
 
-  const switchDangerReminder = createGeneralSwitch(
-    'switch-danger-reminder',
-    'reminder-container-danger',
-    'dangerReminderSwitch'
-  );
-  const switchRestReminder = createGeneralSwitch(
-    'switch-rest-reminder',
-    'reminder-container-rest',
-    'restReminderSwitch'
-  );
+    const userRestReminders = createInputList(
+        'reminders-user-rest',
+        'userRemindersRest'
+    );
 
-  const switchDefaultQoutes = createGeneralSwitch(
-    'switch-danger-default-quotes',
-    'danger-default-quotes-container',
-    undefined
-  );
+    const switchDangerReminder = createGeneralSwitch(
+        'switch-danger-reminder',
+        'reminder-container-danger',
+        'dangerReminderSwitch'
+    );
+    const switchRestReminder = createGeneralSwitch(
+        'switch-rest-reminder',
+        'reminder-container-rest',
+        'restReminderSwitch'
+    );
 
-  const dangerDefaultQuotes = createDefaultList(
-    'danger-default-quotes',
-    'defaultQuotes',
-    switchDefaultQoutes
-  );
+    const switchDefaultQoutes = createGeneralSwitch(
+        'switch-danger-default-quotes',
+        'danger-default-quotes-container',
+        undefined
+    );
 
-  switchDefaultQoutes.setCallback(dangerDefaultQuotes.setAll);
+    const dangerDefaultQuotes = createDefaultList(
+        'danger-default-quotes',
+        'defaultQuotes',
+        switchDefaultQoutes
+    );
 
-  const switchDangerDefaultReminders = createGeneralSwitch(
-    'switch-danger-default-reminders',
-    'switch-danger-default-reminders',
-    undefined
-  );
+    switchDefaultQoutes.setCallback(dangerDefaultQuotes.setAll);
 
-  const defaultDangerReminders = createDefaultList(
-    'reminders-default-danger',
-    'defaultRemindersDanger',
-    switchDangerDefaultReminders
-  );
+    const switchDangerDefaultReminders = createGeneralSwitch(
+        'switch-danger-default-reminders',
+        'switch-danger-default-reminders',
+        undefined
+    );
 
-  switchDangerDefaultReminders.setCallback(defaultDangerReminders.setAll);
+    const defaultDangerReminders = createDefaultList(
+        'reminders-default-danger',
+        'defaultRemindersDanger',
+        switchDangerDefaultReminders
+    );
 
-  const switchRestDefaultReminders = createGeneralSwitch(
-    'switch-rest-default-reminders',
-    'switch-rest-default-reminders',
-    undefined
-  );
+    switchDangerDefaultReminders.setCallback(defaultDangerReminders.setAll);
 
-  const defaultRestReminders = createDefaultList(
-    'reminders-default-rest',
-    'defaultRemindersRest',
-    switchRestDefaultReminders
-  );
+    const switchRestDefaultReminders = createGeneralSwitch(
+        'switch-rest-default-reminders',
+        'switch-rest-default-reminders',
+        undefined
+    );
 
-  switchRestDefaultReminders.setCallback(defaultRestReminders.setAll);
+    const defaultRestReminders = createDefaultList(
+        'reminders-default-rest',
+        'defaultRemindersRest',
+        switchRestDefaultReminders
+    );
 
-  const dangerUserQuotes = createInputList('danger-user-quotes', 'userQuotes');
+    switchRestDefaultReminders.setCallback(defaultRestReminders.setAll);
 
-  const copySwitch = createGeneralSwitch(
-    'copy-switch',
-    'copy-switch-container',
-    'copy'
-  );
+    const dangerUserQuotes = createInputList('danger-user-quotes', 'userQuotes');
 
-  const navigation = createNavigation(
-    'navigation',
-    [
-      {
-        section: 'danger',
-        text: 'MINDLESS WEBSITES',
-      },
-      {
-        section: 'default-list',
-        text: 'MOTIVATIONAL QUOTES',
-      },
-      {
-        section: 'reminder_content',
-        text: 'REMINDERS',
-      },
-    ],
-    'img/logoBlue128.png'
-  );
+    const copySwitch = createGeneralSwitch(
+        'copy-switch',
+        'copy-switch-container',
+        'copy'
+    );
+
+    const navigation = createNavigation(
+        'navigation',
+        [
+            {
+                section: 'danger',
+                text: 'MINDLESS WEBSITES',
+            },
+            {
+                section: 'default-list',
+                text: 'MOTIVATIONAL QUOTES',
+            },
+            {
+                section: 'reminder_content',
+                text: 'REMINDERS',
+            },
+        ],
+        'img/logoBlue128.png'
+    );
 } catch (e) {
-  console.error(e);
+    console.error(e);
 }
