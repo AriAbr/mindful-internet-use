@@ -4,62 +4,14 @@ import createTimerList from '../components/createTimerList';
 import createGeneralSwitch from '../components/createGeneralSwitch';
 import createNavigation from '../components/createNavigation';
 import setUpGoogleAnalytics from "../analytics"
-import selectList from "../components/selectList"
+import selectList from "../components/selectNumBreath"
 
 
 setUpGoogleAnalytics("/stop")
 
 try {
     const timerListDanger = createTimerList('timerListDanger', 'DANGER');
-    const numBreathSelector = selectList(
-        "numBreathSelector",
-        [
-            {
-                value: 1,
-                label: '1'
-            },
-            {
-                value: 1,
-                label: '1'
-            },
-            {
-                value: 2,
-                label: '2'
-            },
-            {
-                value: 3,
-                label: '3'
-            }, {
-            value: 4,
-            label: '4'
-        },{
-            value: 5,
-            label: '5'
-        },
-            {
-                value: 6,
-                label: '6'
-            },
-            {
-                value: 7,
-                label: '7'
-            },
-            {
-                value: 8,
-                label: '8'
-            }, {
-            value: 9,
-            label: '9'
-        },{
-            value: 10,
-            label: '10'
-        }
-
-        ],
-        ''
-        )
-    ;
-    const timerListRest = createTimerList('timerListRest', 'REST');
+    const numBreathSelector = selectList("numBreathSelector")
 
     const dangerURLs = createInputList('danger-list', 'dangerList');
 
@@ -152,6 +104,7 @@ try {
         ],
         'img/logoBlue128.png'
     );
-} catch (e) {
+} catch
+    (e) {
     console.error(e);
 }

@@ -1,8 +1,51 @@
-export default (id, items, callbackAfterSetStorage) =>
-    new SelectList(id, items, callbackAfterSetStorage);
+export default (id) => new SelectNumBreath(id);
 
-class SelectList {
-    constructor(id, items) {
+const items = [
+    {
+        value: 1,
+        label: '1'
+    },
+    {
+        value: 1,
+        label: '1'
+    },
+    {
+        value: 2,
+        label: '2'
+    },
+    {
+        value: 3,
+        label: '3'
+    }, {
+        value: 4,
+        label: '4',
+        default: true
+    }, {
+        value: 5,
+        label: '5'
+    },
+    {
+        value: 6,
+        label: '6'
+    },
+    {
+        value: 7,
+        label: '7'
+    },
+    {
+        value: 8,
+        label: '8'
+    }, {
+        value: 9,
+        label: '9'
+    }, {
+        value: 10,
+        label: '10'
+    }
+]
+
+class SelectNumBreath {
+    constructor(id) {
         this.container = document.getElementById(id);
         // console.log(this.container);
 
@@ -11,12 +54,10 @@ class SelectList {
 
         this.setUpHtml(items);
         this.setUpList();
-        this.loadTimer();
-    }
-
-
+        this.loadNumBreath()
 
     }
+
 
     setUpHtml(items) {
         let html = ''
@@ -24,10 +65,9 @@ class SelectList {
         <div class="custom-select custom-select-list">
         <select class="custom-select__select">`
 
-        html += items.reduce((optionStrings, item) => optionStrings += `<option value="${item.value}">${item.label}</option>`, '')
+        html += items.reduce((optionStrings, item) => optionStrings += `<option selected="${item.default}" value="${item.value}">${item.label}</option>`, '')
         html += '</select></div>'
         this.container.innerHTML = html;
-        console.log(this.container.innerHTML)
     }
 
     setUpList() {
@@ -62,7 +102,7 @@ class SelectList {
                 c.addEventListener('click', function (e) {
                     /* When an item is clicked, update the original select box,
                       and the selected item: */
-                    self.timeHandler(e);
+                    self.setNumBreath(+e.target.innerText);
                     let y;
                     let i;
                     let k;
@@ -123,20 +163,19 @@ class SelectList {
         }
     }
 
-    timeHandler(e) {
-        const minutes = e.target.textContent.substring(
-            0,
-            e.target.textContent.length - 3
-        );
+    loadNumBreath() {
+        chrome.storage.sync.get(['numBreath'], (result) => {
+            if (!result.numBreath) {
+                throw new Error('numBreath not found in storage')
+            }
 
-        if (this.type === 'DANGER') {
-            chrome.storage.sync.set({dangerTime: parseInt(minutes)}, () => {
-                this.loadTimer();
-            });
-        } else if (this.type === 'REST') {
-            chrome.storage.sync.set({restTime: parseInt(minutes)}, () => {
-                this.loadTimer();
-            });
-        }
+            this.container.children[0].children[1].textContent = +result.numBreath
+        });
+    }
+
+    setNumBreath(numBreath) {
+        chrome.storage.sync.set({numBreath}, () => {
+            this.loadNumBreath();
+        });
     }
 }

@@ -73,12 +73,8 @@ const goToOptions = () => {
   chrome.tabs.create({ url: 'options.html' });
 };
 
-chrome.storage.sync.get(['copy'], ({ copy }) => {
-
-
-  let numBreaths = copy ? 2 : 4;
-  breathe(numBreaths)
-
+chrome.storage.sync.get([ 'numBreath'], ({numBreath }) => {
+  breathe(numBreath || 10)
 });
 
 let currentIndex = 0;
